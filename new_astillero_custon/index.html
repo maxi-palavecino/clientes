@@ -1,0 +1,2972 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASTILLERO CUSTON S.A. | High Naval Architecture & Luxury Cruisers</title>
+  <meta name="description" content="Astillero Custon S.A. — San Fernando, Argentina. Más de 35 años y 1.300 embarcaciones botadas. Yates Flybridge, Coupés Hard Top y Sport Cruisers de hiper-lujo inspirados en la excelencia naval.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+
+  <style>
+    /* ----------------------------------------------------
+       OFFLINE LOCAL TYPOGRAPHY & BUGATTI DESIGN TOKENS
+    ---------------------------------------------------- */
+    @font-face {
+      font-family: 'Michroma';
+      src: url('Michroma.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Montserrat-Black';
+      src: url('Montserrat-Black.ttf') format('truetype');
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Orbitron';
+      src: url('Orbitron-Bold.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      /* Bugatti.com Pure Monochrome Palette */
+      --bg-black: #000000;
+      --bg-void: #030303;
+      --bg-surface: #080808;
+      --bg-surface-elevated: #111111;
+      --bg-glass: rgba(0, 0, 0, 0.85);
+
+      --hairline: rgba(255, 255, 255, 0.12);
+      --hairline-bright: rgba(255, 255, 255, 0.28);
+      --hairline-focus: rgba(255, 255, 255, 0.7);
+
+      --text-pure: #FFFFFF;
+      --text-muted: #8E8E93;
+      --text-subtle: #555555;
+      --accent-champagne: #C5A880;
+
+      /* Typography */
+      --font-display: 'Michroma', 'Montserrat-Black', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: 'Orbitron', 'SF Mono', 'Segoe UI Mono', monospace;
+
+      --tracking-monumental: 0.32em;
+      --tracking-wide: 0.22em;
+      --tracking-subtle: 0.10em;
+
+      --ease-bugatti: cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-smooth: 0.4s var(--ease-bugatti);
+      --transition-long: 0.8s var(--ease-bugatti);
+
+      --max-w-content: 1480px;
+      --nav-h: 72px;
+    }
+
+    /* Reset & Base Canvas */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background-color: var(--bg-black);
+      color: var(--text-pure);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-black);
+      color: var(--text-pure);
+      overflow-x: hidden;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    body.modal-active {
+      overflow: hidden !important;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* ----------------------------------------------------
+       BUGATTI BINARY GEOMETRY (0px frames vs 9999px pills)
+    ---------------------------------------------------- */
+    .sharp-edge {
+      border-radius: 0px !important;
+    }
+
+    /* Bugatti Ghost Pill Buttons */
+    .btn-bugatti {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      border-radius: 9999px;
+      padding: 0.85rem 2.2rem;
+      background: transparent;
+      color: var(--text-pure);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+      white-space: nowrap;
+      min-height: 48px;
+    }
+
+    .btn-bugatti:hover, .btn-bugatti:focus-visible {
+      background: #FFFFFF;
+      color: #000000;
+      border-color: #FFFFFF;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.25);
+      outline: none;
+    }
+
+    .btn-bugatti-primary {
+      background: #FFFFFF;
+      color: #000000;
+      border-color: #FFFFFF;
+    }
+    .btn-bugatti-primary:hover {
+      background: transparent;
+      color: #FFFFFF;
+      border-color: #FFFFFF;
+    }
+
+    .btn-bugatti-sm {
+      padding: 0.55rem 1.4rem;
+      font-size: 0.65rem;
+      min-height: 38px;
+    }
+
+    /* ----------------------------------------------------
+       TOP NAVIGATION BAR & FULL-SCREEN BUGATTI MENU
+    ---------------------------------------------------- */
+    #navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: var(--nav-h);
+      z-index: 1000;
+      transition: background-color var(--transition-smooth), border-color var(--transition-smooth), backdrop-filter var(--transition-smooth);
+      border-bottom: 1px solid transparent;
+    }
+
+    #navbar.nav-scrolled {
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .nav-inner {
+      max-width: var(--max-w-content);
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .menu-trigger {
+      background: transparent;
+      border: none;
+      color: var(--text-pure);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      padding: 0.5rem 0.75rem;
+      transition: color var(--transition-smooth);
+    }
+    .menu-trigger:hover {
+      color: var(--accent-champagne);
+    }
+
+    .menu-burger-bars {
+      width: 20px;
+      height: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .menu-burger-bars span {
+      display: block;
+      width: 100%;
+      height: 1.5px;
+      background: currentColor;
+      transition: transform var(--transition-smooth);
+    }
+
+    .nav-brand {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-align: center;
+    }
+
+    .brand-logo-crest {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      filter: brightness(1.2);
+    }
+
+    .brand-wordmark {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: var(--tracking-monumental);
+      text-transform: uppercase;
+      color: #FFFFFF;
+      white-space: nowrap;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-quick-link {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color var(--transition-smooth);
+      display: none;
+    }
+    @media (min-width: 900px) {
+      .nav-quick-link { display: inline-block; }
+    }
+    .nav-quick-link:hover {
+      color: #FFFFFF;
+    }
+
+    /* Full-Screen Bugatti Drawer Menu */
+    #menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #000000;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--transition-smooth), visibility var(--transition-smooth);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #menu-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .menu-overlay-header {
+      height: var(--nav-h);
+      padding: 0 2rem;
+      max-width: var(--max-w-content);
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .btn-close-menu {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 9999px;
+      color: #FFFFFF;
+      padding: 0.4rem 1.2rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: var(--tracking-wide);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all var(--transition-smooth);
+    }
+    .btn-close-menu:hover {
+      background: #FFFFFF;
+      color: #000000;
+    }
+
+    .menu-overlay-content {
+      flex: 1;
+      max-width: var(--max-w-content);
+      width: 100%;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
+    @media (min-width: 1024px) {
+      .menu-overlay-content {
+        grid-template-columns: 1.2fr 1fr;
+      }
+    }
+
+    .menu-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .menu-nav-item {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: all var(--transition-smooth);
+    }
+    .menu-nav-item span.menu-num {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      letter-spacing: var(--tracking-monumental);
+      color: var(--text-subtle);
+    }
+    .menu-nav-item:hover {
+      color: #FFFFFF;
+      transform: translateX(10px);
+    }
+    .menu-nav-item:hover span.menu-num {
+      color: var(--accent-champagne);
+    }
+
+    .menu-models-grid {
+      border-left: 1px solid var(--hairline);
+      padding-left: 0;
+    }
+    @media (min-width: 1024px) {
+      .menu-models-grid {
+        padding-left: 3rem;
+      }
+    }
+
+    .menu-sub-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: var(--tracking-monumental);
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .menu-vessels-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .menu-vessel-pill {
+      background: var(--bg-surface);
+      border: 1px solid var(--hairline);
+      padding: 1rem;
+      transition: all var(--transition-smooth);
+      cursor: pointer;
+    }
+    .menu-vessel-pill:hover {
+      border-color: #FFFFFF;
+      background: var(--bg-surface-elevated);
+    }
+    .menu-vessel-name {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: #FFFFFF;
+      margin-bottom: 0.25rem;
+    }
+    .menu-vessel-meta {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    /* ----------------------------------------------------
+       HERO CINEMATICS (100vh Full-Bleed Flagship)
+    ---------------------------------------------------- */
+    .hero-cinematic {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 650px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      padding-bottom: clamp(3rem, 7vh, 6rem);
+    }
+
+    .hero-media-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .hero-media-backdrop img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transform: scale(1.02);
+      transition: transform 8s var(--ease-bugatti);
+    }
+    .hero-cinematic:hover .hero-media-backdrop img {
+      transform: scale(1.05);
+    }
+
+    .hero-vignette {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.45) 0%,
+        rgba(0, 0, 0, 0.15) 30%,
+        rgba(0, 0, 0, 0.35) 60%,
+        rgba(0, 0, 0, 0.95) 100%
+      );
+      z-index: 2;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      max-width: var(--max-w-content);
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .hero-pre-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: var(--tracking-monumental);
+      text-transform: uppercase;
+      color: var(--accent-champagne);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .hero-pre-title::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--accent-champagne);
+    }
+
+    .hero-title-monumental {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 7.5vw, 6.5rem);
+      font-weight: 900;
+      line-height: 0.98;
+      letter-spacing: var(--tracking-monumental);
+      text-transform: uppercase;
+      color: #FFFFFF;
+      margin-bottom: 1.25rem;
+      text-shadow: 0 4px 30px rgba(0,0,0,0.8);
+    }
+
+    .hero-tagline {
+      font-family: var(--font-body);
+      font-size: clamp(0.95rem, 1.4vw, 1.25rem);
+      font-weight: 300;
+      letter-spacing: var(--tracking-subtle);
+      color: #E0E0E0;
+      max-width: 650px;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    /* Bugatti Telemetry Strip */
+    .telemetry-strip {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--hairline);
+      border: 1px solid var(--hairline);
+      max-width: 820px;
+      margin-bottom: 2.25rem;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    @media (min-width: 640px) {
+      .telemetry-strip {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .telemetry-box {
+      background: rgba(0, 0, 0, 0.75);
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .telemetry-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .telemetry-val {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: #FFFFFF;
+    }
+
+    .hero-actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    /* Scroll Indicator */
+    .scroll-indicator-wrap {
+      position: absolute;
+      right: 2rem;
+      bottom: 2.5rem;
+      z-index: 3;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    @media (min-width: 1024px) {
+      .scroll-indicator-wrap { display: flex; }
+    }
+
+    .scroll-label {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: var(--tracking-monumental);
+      text-transform: uppercase;
+      color: var(--text-muted);
+      writing-mode: vertical-lr;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: var(--hairline);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: #FFFFFF;
+      animation: scrollPulse 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    }
+    @keyframes scrollPulse {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(200%); }
+    }
+
+    /* ----------------------------------------------------
+       BUGATTI FULL-BLEED SHOWCASE SLIDES (Tourbillon Style)
+    ---------------------------------------------------- */
+    .bugatti-showcase-section {
+      position: relative;
+      width: 100%;
+      min-height: 85vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid var(--hairline);
+      background: var(--bg-black);
+    }
+
+    .showcase-bg-media {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .showcase-bg-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: brightness(0.85);
+      transition: transform 1.2s var(--ease-bugatti), filter 0.8s ease;
+    }
+    .bugatti-showcase-section:hover .showcase-bg-media img {
+      transform: scale(1.02);
+      filter: brightness(0.92);
+    }
+
+    .showcase-vignette-left {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        rgba(0,0,0,0.92) 0%,
+        rgba(0,0,0,0.7) 40%,
+        rgba(0,0,0,0.2) 75%,
+        rgba(0,0,0,0.5) 100%
+      );
+      z-index: 2;
+    }
+
+    .showcase-content-box {
+      position: relative;
+      z-index: 3;
+      max-width: var(--max-w-content);
+      width: 100%;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .showcase-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: var(--tracking-monumental);
+      text-transform: uppercase;
+      color: var(--accent-champagne);
+      margin-bottom: 0.5rem;
+    }
+
+    .showcase-vessel-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5.5vw, 4.8rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: var(--tracking-monumental);
+      text-transform: uppercase;
+      color: #FFFFFF;
+      margin-bottom: 1rem;
+    }
+
+    .showcase-narrative {
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.6;
+      color: #D1D1D6;
+      max-width: 580px;
+      margin-bottom: 2rem;
+    }
+
+    .showcase-specs-cluster {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      border-top: 1px solid var(--hairline);
+      padding-top: 1.5rem;
+      max-width: 580px;
+    }
+
+    .showcase-spec-unit {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .showcase-spec-k {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .showcase-spec-v {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    /* ----------------------------------------------------
+       THE FULL FLEET LINEUP (Bugatti Models Index)
+    ---------------------------------------------------- */
+    .section-fleet-index {
+      padding: 7rem 0 5rem;
+      background: var(--bg-void);
+      border-top: 1px solid var(--hairline);
+    }
+
+    .fleet-container {
+      max-width: var(--max-w-content);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section-editorial-header {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+    }
+    @media (min-width: 768px) {
+      .section-editorial-header {
+        flex-direction: row;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: var(--tracking-monumental);
+      text-transform: uppercase;
+      color: var(--accent-champagne);
+    }
+
+    .section-main-heading {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      letter-spacing: var(--tracking-monumental);
+      text-transform: uppercase;
+      color: #FFFFFF;
+      line-height: 1.1;
+    }
+
+    .section-sub-desc {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 480px;
+      line-height: 1.5;
+    }
+
+    /* Category Filter Bar */
+    .filter-tabs-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--hairline);
+      padding-bottom: 1.5rem;
+    }
+
+    .tab-pill {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 9999px;
+      padding: 0.6rem 1.4rem;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+    }
+    .tab-pill:hover {
+      border-color: #FFFFFF;
+      color: #FFFFFF;
+    }
+    .tab-pill.active {
+      background: #FFFFFF;
+      color: #000000;
+      border-color: #FFFFFF;
+      font-weight: 700;
+    }
+
+    /* Widescreen Cinema Vessel Cards */
+    .fleet-widescreen-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    @media (min-width: 840px) {
+      .fleet-widescreen-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .vessel-cinema-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--hairline);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: border-color var(--transition-smooth), transform var(--transition-smooth);
+    }
+    .vessel-cinema-card:hover {
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-4px);
+    }
+
+    .vessel-card-media {
+      position: relative;
+      width: 100%;
+      height: 320px;
+      overflow: hidden;
+      background: #050505;
+    }
+    @media (min-width: 1200px) {
+      .vessel-card-media { height: 380px; }
+    }
+
+    .vessel-card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform var(--transition-long);
+    }
+    .vessel-cinema-card:hover .vessel-card-media img {
+      transform: scale(1.05);
+    }
+
+    .vessel-category-tag {
+      position: absolute;
+      top: 1.25rem;
+      left: 1.25rem;
+      background: rgba(0, 0, 0, 0.75);
+      border: 1px solid var(--hairline);
+      border-radius: 9999px;
+      padding: 0.35rem 0.9rem;
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: #FFFFFF;
+      backdrop-filter: blur(8px);
+    }
+
+    .vessel-card-info {
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+      border-top: 1px solid var(--hairline);
+      background: var(--bg-surface);
+    }
+
+    .vessel-card-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+
+    .vessel-card-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: #FFFFFF;
+    }
+
+    .vessel-card-eslora {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent-champagne);
+    }
+
+    .vessel-card-tagline {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+
+    .vessel-card-specs-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--hairline);
+      border: 1px solid var(--hairline);
+      margin-bottom: 1.75rem;
+    }
+
+    .card-spec-box {
+      background: var(--bg-surface-elevated);
+      padding: 0.6rem 0.75rem;
+      text-align: center;
+    }
+    .card-spec-box span.k {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 0.55rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .card-spec-box span.v {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-top: 0.15rem;
+    }
+
+    .vessel-card-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* ----------------------------------------------------
+       SUR MESURE ATELIER (Bugatti Customization Experience)
+    ---------------------------------------------------- */
+    .section-sur-mesure {
+      padding: 8rem 0;
+      background: var(--bg-black);
+      border-top: 1px solid var(--hairline);
+      position: relative;
+    }
+
+    .sur-mesure-wrap {
+      max-width: var(--max-w-content);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .sur-mesure-hero-block {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3.5rem;
+      margin-bottom: 5rem;
+      align-items: center;
+    }
+    @media (min-width: 1024px) {
+      .sur-mesure-hero-block {
+        grid-template-columns: 1fr 1.2fr;
+      }
+    }
+
+    .sur-mesure-narrative {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .sur-mesure-narrative p {
+      font-size: 1.05rem;
+      color: #A0A0A5;
+      line-height: 1.7;
+    }
+
+    .sur-mesure-media-dual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .sur-mesure-img-frame {
+      position: relative;
+      height: 420px;
+      overflow: hidden;
+      border: 1px solid var(--hairline);
+    }
+    .sur-mesure-img-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(20%) brightness(0.9);
+      transition: transform var(--transition-long);
+    }
+    .sur-mesure-img-frame:hover img {
+      transform: scale(1.05);
+      filter: grayscale(0%) brightness(1);
+    }
+
+    .sur-mesure-img-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(0,0,0,0.8);
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: #FFFFFF;
+      border-top: 1px solid var(--hairline);
+    }
+
+    /* 4 Pillars of Bespoke Craftsmanship */
+    .sur-mesure-pillars {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-bottom: 5rem;
+    }
+    @media (min-width: 640px) {
+      .sur-mesure-pillars {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 1024px) {
+      .sur-mesure-pillars {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .pillar-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--hairline);
+      padding: 2.25rem 1.75rem;
+      transition: border-color var(--transition-smooth);
+    }
+    .pillar-card:hover {
+      border-color: var(--accent-champagne);
+    }
+
+    .pillar-num {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      letter-spacing: var(--tracking-monumental);
+      color: var(--accent-champagne);
+      margin-bottom: 1rem;
+    }
+
+    .pillar-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: #FFFFFF;
+      margin-bottom: 0.75rem;
+    }
+
+    .pillar-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Interactive Bespoke Visualizer (Sur Mesure Configurator) */
+    .bespoke-configurator-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--hairline);
+      padding: clamp(2rem, 4vw, 3.5rem);
+      position: relative;
+    }
+
+    .configurator-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    @media (min-width: 1024px) {
+      .configurator-grid {
+        grid-template-columns: 1.1fr 1fr;
+      }
+    }
+
+    .configurator-preview-pane {
+      background: #020202;
+      border: 1px solid var(--hairline);
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 380px;
+      position: relative;
+    }
+
+    .hull-preview-canvas {
+      width: 100%;
+      max-width: 440px;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hull-svg-shape {
+      width: 100%;
+      height: 100%;
+      transition: fill 0.5s ease, filter 0.5s ease;
+    }
+
+    .preview-telemetry-badge {
+      position: absolute;
+      top: 1.25rem;
+      left: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .preview-code-badge {
+      position: absolute;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--accent-champagne);
+    }
+
+    .configurator-options-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .config-group-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: var(--tracking-monumental);
+      text-transform: uppercase;
+      color: #FFFFFF;
+      margin-bottom: 0.85rem;
+    }
+
+    .swatches-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .swatch-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--hairline);
+      border-radius: 9999px;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      transition: all var(--transition-smooth);
+    }
+    .swatch-btn:hover {
+      border-color: #FFFFFF;
+      color: #FFFFFF;
+    }
+    .swatch-btn.selected {
+      border-color: #FFFFFF;
+      background: #FFFFFF;
+      color: #000000;
+      font-weight: 700;
+    }
+
+    .swatch-circle {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,0,0,0.3);
+      display: inline-block;
+    }
+
+    /* ----------------------------------------------------
+       SAN FERNANDO SHIPYARD & HERITAGE (Bugatti Molsheim Style)
+    ---------------------------------------------------- */
+    .section-heritage-yard {
+      padding: 8rem 0;
+      background: var(--bg-void);
+      border-top: 1px solid var(--hairline);
+    }
+
+    .yard-container {
+      max-width: var(--max-w-content);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .yard-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    @media (min-width: 1024px) {
+      .yard-grid {
+        grid-template-columns: 1.1fr 1fr;
+      }
+    }
+
+    .yard-media-spread {
+      position: relative;
+      border: 1px solid var(--hairline);
+      overflow: hidden;
+      height: 480px;
+    }
+    .yard-media-spread img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .yard-badge-overlay {
+      position: absolute;
+      bottom: 2rem;
+      left: 2rem;
+      background: rgba(0, 0, 0, 0.88);
+      border: 1px solid var(--hairline);
+      padding: 1.25rem 1.75rem;
+      backdrop-filter: blur(12px);
+    }
+    .yard-badge-coord {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: var(--tracking-monumental);
+      color: var(--accent-champagne);
+      margin-bottom: 0.25rem;
+    }
+    .yard-badge-text {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: #FFFFFF;
+    }
+
+    .yard-info-narrative {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .yard-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      border-top: 1px solid var(--hairline);
+      border-bottom: 1px solid var(--hairline);
+      padding: 2rem 0;
+      margin: 1rem 0;
+    }
+
+    .yard-stat-item span.num {
+      display: block;
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: var(--tracking-wide);
+      color: #FFFFFF;
+    }
+    .yard-stat-item span.txt {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ----------------------------------------------------
+       VIP CONCIERGE & PRIVATE AUDIENCES
+    ---------------------------------------------------- */
+    .section-concierge {
+      padding: 8rem 0;
+      background: var(--bg-black);
+      border-top: 1px solid var(--hairline);
+    }
+
+    .concierge-wrap {
+      max-width: var(--max-w-content);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .concierge-card-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--hairline);
+      padding: clamp(2.5rem, 5vw, 5rem);
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
+    @media (min-width: 1024px) {
+      .concierge-card-box {
+        grid-template-columns: 1fr 1.2fr;
+      }
+    }
+
+    .concierge-direct-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .officer-card {
+      border: 1px solid var(--hairline);
+      padding: 1.75rem;
+      background: var(--bg-surface-elevated);
+      margin-top: 2rem;
+    }
+    .officer-role {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: var(--tracking-monumental);
+      text-transform: uppercase;
+      color: var(--accent-champagne);
+      margin-bottom: 0.25rem;
+    }
+    .officer-name {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: #FFFFFF;
+      margin-bottom: 0.75rem;
+    }
+    .officer-phone {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .concierge-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-field label {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .form-input-hairline {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--hairline);
+      padding: 0.85rem 0;
+      color: #FFFFFF;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      transition: border-color var(--transition-smooth);
+      outline: none;
+    }
+    .form-input-hairline:focus {
+      border-color: #FFFFFF;
+    }
+
+    select.form-input-hairline {
+      background: var(--bg-surface);
+      cursor: pointer;
+    }
+
+    /* ----------------------------------------------------
+       BUGATTI TECHNICAL DOSSIER MODAL
+    ---------------------------------------------------- */
+    #dossier-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 3000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--transition-smooth), visibility var(--transition-smooth);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    #dossier-modal.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-frame {
+      background: #080808;
+      border: 1px solid var(--hairline-bright);
+      max-width: 1140px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      position: relative;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.95);
+    }
+    @media (min-width: 960px) {
+      .modal-frame {
+        grid-template-columns: 1.1fr 1fr;
+      }
+    }
+
+    .modal-close-trigger {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid var(--hairline);
+      border-radius: 9999px;
+      color: #FFFFFF;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      font-size: 1.2rem;
+      transition: all var(--transition-smooth);
+    }
+    .modal-close-trigger:hover {
+      background: #FFFFFF;
+      color: #000000;
+    }
+
+    .modal-media-col {
+      position: relative;
+      background: #000000;
+      min-height: 350px;
+    }
+    .modal-media-col img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .modal-info-col {
+      padding: clamp(2rem, 4vw, 3.5rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-top: 1px solid var(--hairline);
+    }
+    @media (min-width: 960px) {
+      .modal-info-col {
+        border-top: none;
+        border-left: 1px solid var(--hairline);
+      }
+    }
+
+    .modal-cat-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: var(--tracking-monumental);
+      text-transform: uppercase;
+      color: var(--accent-champagne);
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+      font-weight: 900;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: #FFFFFF;
+      margin-bottom: 1rem;
+    }
+
+    .modal-desc {
+      font-size: 0.92rem;
+      color: #B0B0B5;
+      line-height: 1.6;
+      margin-bottom: 1.75rem;
+    }
+
+    .modal-specs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+
+    .modal-specs-table tr {
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .modal-specs-table td {
+      padding: 0.65rem 0;
+      font-size: 0.85rem;
+    }
+
+    .modal-specs-table td.k {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--text-muted);
+      width: 45%;
+    }
+
+    .modal-specs-table td.v {
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #FFFFFF;
+      text-align: right;
+    }
+
+    /* ----------------------------------------------------
+       BUGATTI MONUMENTAL FOOTER
+    ---------------------------------------------------- */
+    footer#site-footer {
+      background: #000000;
+      border-top: 1px solid var(--hairline);
+      padding: 6rem 0 3rem;
+      position: relative;
+    }
+
+    .footer-wrap {
+      max-width: var(--max-w-content);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .footer-brand-masthead {
+      margin-bottom: 5rem;
+      text-align: center;
+      border-bottom: 1px solid var(--hairline);
+      padding-bottom: 4rem;
+    }
+
+    .footer-giant-wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 8vw, 6.8rem);
+      font-weight: 900;
+      letter-spacing: var(--tracking-monumental);
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.08);
+      user-select: none;
+      line-height: 1;
+    }
+
+    .footer-columns-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+    @media (min-width: 900px) {
+      .footer-columns-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .footer-col-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: var(--tracking-monumental);
+      text-transform: uppercase;
+      color: #FFFFFF;
+      margin-bottom: 1.25rem;
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-links-list a {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      transition: color var(--transition-smooth);
+    }
+    .footer-links-list a:hover {
+      color: #FFFFFF;
+    }
+
+    .footer-bottom-row {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      border-top: 1px solid var(--hairline);
+      padding-top: 2rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-subtle);
+      letter-spacing: var(--tracking-wide);
+    }
+    @media (min-width: 768px) {
+      .footer-bottom-row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .footer-back-to-top {
+      background: transparent;
+      border: 1px solid var(--hairline);
+      border-radius: 9999px;
+      color: var(--text-muted);
+      padding: 0.4rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      letter-spacing: var(--tracking-wide);
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+    }
+    .footer-back-to-top:hover {
+      border-color: #FFFFFF;
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. BUGATTI TOP NAVIGATION OVERLAY -->
+  <header id="navbar">
+    <div class="nav-inner">
+      <div class="nav-left">
+        <button id="open-menu-btn" class="menu-trigger" aria-label="Abrir Menú Principal">
+          <div class="menu-burger-bars">
+            <span></span>
+            <span></span>
+          </div>
+          <span>MENU</span>
+        </button>
+      </div>
+
+      <div class="nav-brand">
+        <img src="assets/logo.png" alt="Astillero Custon Crest" class="brand-logo-crest">
+        <a href="#hero" class="brand-wordmark">ASTILLERO CUSTON</a>
+      </div>
+
+      <div class="nav-right">
+        <a href="#showroom" class="nav-quick-link">MODELOS</a>
+        <a href="#sur-mesure" class="nav-quick-link">SUR MESURE</a>
+        <a href="#concierge" class="btn-bugatti btn-bugatti-sm">CONCIERGE</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. FULLSCREEN BUGATTI MENU DRAWER -->
+  <div id="menu-overlay" aria-hidden="true">
+    <div class="menu-overlay-header">
+      <div class="brand-wordmark" style="font-size: 0.75rem;">ASTILLERO CUSTON S.A.</div>
+      <button id="close-menu-btn" class="btn-close-menu" aria-label="Cerrar Menú">
+        <span>✕</span> CERRAR
+      </button>
+    </div>
+    <div class="menu-overlay-content">
+      <div class="menu-nav-links">
+        <a href="#hero" class="menu-nav-item close-menu-link">
+          <span class="menu-num">01</span> NAVE INSIGNIA
+        </a>
+        <a href="#showcases" class="menu-nav-item close-menu-link">
+          <span class="menu-num">02</span> SHOWCASES CINEMA
+        </a>
+        <a href="#showroom" class="menu-nav-item close-menu-link">
+          <span class="menu-num">03</span> TODA LA FLOTA (10)
+        </a>
+        <a href="#sur-mesure" class="menu-nav-item close-menu-link">
+          <span class="menu-num">04</span> ATELIER SUR MESURE
+        </a>
+        <a href="#varadero" class="menu-nav-item close-menu-link">
+          <span class="menu-num">05</span> EL ASTILLERO & LEGADO
+        </a>
+        <a href="#concierge" class="menu-nav-item close-menu-link">
+          <span class="menu-num">06</span> VIP CONCIERGE
+        </a>
+      </div>
+
+      <div class="menu-models-grid">
+        <div class="menu-sub-title">// CATALOGO COMPLETO DE EMBARCACIONES</div>
+        <div class="menu-vessels-list">
+          <div class="menu-vessel-pill" onclick="openModelModal('preveza-62')">
+            <div class="menu-vessel-name">PREVEZA 62</div>
+            <div class="menu-vessel-meta">Flybridge // 20.60 m</div>
+          </div>
+          <div class="menu-vessel-pill" onclick="openModelModal('custon-45')">
+            <div class="menu-vessel-name">CUSTON 45</div>
+            <div class="menu-vessel-meta">Flybridge // 14.10 m</div>
+          </div>
+          <div class="menu-vessel-pill" onclick="openModelModal('custon-42')">
+            <div class="menu-vessel-name">CUSTON 42</div>
+            <div class="menu-vessel-meta">Hard Top Coupé // 12.85 m</div>
+          </div>
+          <div class="menu-vessel-pill" onclick="openModelModal('custon-40')">
+            <div class="menu-vessel-name">CUSTON 40</div>
+            <div class="menu-vessel-meta">Hard Top Coupé // 12.36 m</div>
+          </div>
+          <div class="menu-vessel-pill" onclick="openModelModal('custon-38')">
+            <div class="menu-vessel-name">CUSTON 38 FLY</div>
+            <div class="menu-vessel-meta">Flybridge // 12.64 m</div>
+          </div>
+          <div class="menu-vessel-pill" onclick="openModelModal('custon-especial')">
+            <div class="menu-vessel-name">CUSTON ESPECIAL</div>
+            <div class="menu-vessel-meta">Sport Cruiser // 9.50 m</div>
+          </div>
+          <div class="menu-vessel-pill" onclick="openModelModal('custon-cross')">
+            <div class="menu-vessel-name">CUSTON CROSS</div>
+            <div class="menu-vessel-meta">Sport Cruiser // 9.75 m</div>
+          </div>
+          <div class="menu-vessel-pill" onclick="openModelModal('preveza-300')">
+            <div class="menu-vessel-name">PREVEZA 300</div>
+            <div class="menu-vessel-meta">Sport Cruiser // 10.10 m</div>
+          </div>
+          <div class="menu-vessel-pill" onclick="openModelModal('custon-compac')">
+            <div class="menu-vessel-name">CUSTON COMPAC</div>
+            <div class="menu-vessel-meta">Hard Top Coupé // 10.05 m</div>
+          </div>
+          <div class="menu-vessel-pill" onclick="openModelModal('custon-35')">
+            <div class="menu-vessel-name">CUSTON 35 SPORT</div>
+            <div class="menu-vessel-meta">Day Cruiser // 10.50 m</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- 3. HERO SECTION (BUGATTI TOURBILLON PREMIERE STYLE) -->
+    <section id="hero" class="hero-cinematic" aria-label="Nave Insignia Preveza 62">
+      <div class="hero-media-backdrop">
+        <img src="hero.jpg" alt="Astillero Custon Flagship Preveza 62">
+      </div>
+      <div class="hero-vignette"></div>
+
+      <div class="hero-content">
+        <div class="hero-pre-title">PREMIERE NAVAL // SAN FERNANDO, ARGENTINA</div>
+        <h1 class="hero-title-monumental">PREVEZA 62</h1>
+        <p class="hero-tagline">
+          FORM FOLLOWS WATER. VEINTE METROS DE SUPREMACÍA HIDRODINÁMICA, CONFORT RESIDENCIAL Y PODERÍO OCEÁNICO EN EL RÍO DE LA PLATA.
+        </p>
+
+        <!-- Bugatti Telemetry Strip -->
+        <div class="telemetry-strip sharp-edge">
+          <div class="telemetry-box">
+            <span class="telemetry-label">Eslora Total</span>
+            <span class="telemetry-val">20.60 M</span>
+          </div>
+          <div class="telemetry-box">
+            <span class="telemetry-label">Potencia Máxima</span>
+            <span class="telemetry-val">2.300 HP</span>
+          </div>
+          <div class="telemetry-box">
+            <span class="telemetry-label">Combustible</span>
+            <span class="telemetry-val">4.000 L</span>
+          </div>
+          <div class="telemetry-box">
+            <span class="telemetry-label">Desplazamiento</span>
+            <span class="telemetry-val">28 TON</span>
+          </div>
+        </div>
+
+        <div class="hero-actions-row">
+          <button class="btn-bugatti btn-bugatti-primary" onclick="openModelModal('preveza-62')">
+            EXPLORAR PREVEZA 62
+          </button>
+          <a href="https://wa.me/5491147446468?text=*CONSULTA%20VIP%20-%20PREVEZA%2062*%0A%0AHola%20Eduardo%20Damiani%2C%20quisiera%20solicitar%20el%20dossier%20confidencial%20y%20cotizaci%C3%B3n%20formal%20de%20la%20nave%20insignia%20Preveza%2062." target="_blank" rel="noopener noreferrer" class="btn-bugatti">
+            SOLICITAR AUDIENCIA PRIVADA
+          </a>
+        </div>
+      </div>
+
+      <div class="scroll-indicator-wrap">
+        <span class="scroll-label">EXPLORAR</span>
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- 4. FULL-BLEED MONUMENTAL SHOWCASES (BUGATTI LINEUP EXPERIENCE) -->
+    <div id="showcases">
+      <!-- SHOWCASE 1: CUSTON 45 -->
+      <section class="bugatti-showcase-section" aria-label="Custon 45 Showcase">
+        <div class="showcase-bg-media">
+          <img src="cruceros/modelos/modelo_custon_cruiser_45.jpg" alt="Custon 45 Cruiser" loading="lazy">
+        </div>
+        <div class="showcase-vignette-left"></div>
+        <div class="showcase-content-box">
+          <div class="showcase-eyebrow">YATE FLYBRIDGE // LE GRAND CROISEUR</div>
+          <h2 class="showcase-vessel-title">CUSTON 45</h2>
+          <p class="showcase-narrative">
+            Un crucero de marcado estilo europeo con líneas contemporáneas y una inmensa superficie vidriada lateral. Concebido bajo el principio rector de "un barco para vivir a bordo", ofrece tres camarotes completos, dos baños y doble motorización oceánica.
+          </p>
+
+          <div class="showcase-specs-cluster">
+            <div class="showcase-spec-unit">
+              <span class="showcase-spec-k">Eslora</span>
+              <span class="showcase-spec-v">14.10 M</span>
+            </div>
+            <div class="showcase-spec-unit">
+              <span class="showcase-spec-k">Manga</span>
+              <span class="showcase-spec-v">4.26 M</span>
+            </div>
+            <div class="showcase-spec-unit">
+              <span class="showcase-spec-k">Potencia</span>
+              <span class="showcase-spec-v">900 HP</span>
+            </div>
+            <div class="showcase-spec-unit">
+              <span class="showcase-spec-k">Habitabilidad</span>
+              <span class="showcase-spec-v">3 Cam / 2 Baños</span>
+            </div>
+          </div>
+
+          <div class="hero-actions-row">
+            <button class="btn-bugatti btn-bugatti-primary" onclick="openModelModal('custon-45')">
+              DOSSIER TÉCNICO
+            </button>
+            <a href="https://wa.me/5491147446468?text=*CONSULTA%20VIP%20-%20CUSTON%2045*%0A%0AHola%20Eduardo%20Damiani%2C%20quisiera%20solicitar%20cotizaci%C3%B3n%20del%20Custon%2045." target="_blank" rel="noopener noreferrer" class="btn-bugatti">
+              COTIZAR UNIDAD
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SHOWCASE 2: CUSTON 42 COUPÉ HT -->
+      <section class="bugatti-showcase-section" aria-label="Custon 42 Showcase">
+        <div class="showcase-bg-media">
+          <img src="cruceros/modelos/modelo_custon_42.jpg" alt="Custon 42 Coupé HT" loading="lazy">
+        </div>
+        <div class="showcase-vignette-left"></div>
+        <div class="showcase-content-box">
+          <div class="showcase-eyebrow">HARD TOP COUPÉ // DINAMISMO CONTINENTAL</div>
+          <h2 class="showcase-vessel-title">CUSTON 42</h2>
+          <p class="showcase-narrative">
+            La expresión del diseño aerodinámico náutico. Techo rígido integrado con apertura fluida, perfiles afilados y un cockpit social que fusiona el salón principal con la planchada de popa para una experiencia sin interrupciones.
+          </p>
+
+          <div class="showcase-specs-cluster">
+            <div class="showcase-spec-unit">
+              <span class="showcase-spec-k">Eslora</span>
+              <span class="showcase-spec-v">12.85 M</span>
+            </div>
+            <div class="showcase-spec-unit">
+              <span class="showcase-spec-k">Manga</span>
+              <span class="showcase-spec-v">4.03 M</span>
+            </div>
+            <div class="showcase-spec-unit">
+              <span class="showcase-spec-k">Configuración</span>
+              <span class="showcase-spec-v">Hard Top Coupé</span>
+            </div>
+            <div class="showcase-spec-unit">
+              <span class="showcase-spec-k">Propulsión</span>
+              <span class="showcase-spec-v">Bimotor Diesel</span>
+            </div>
+          </div>
+
+          <div class="hero-actions-row">
+            <button class="btn-bugatti btn-bugatti-primary" onclick="openModelModal('custon-42')">
+              DOSSIER TÉCNICO
+            </button>
+            <a href="https://wa.me/5491147446468?text=*CONSULTA%20VIP%20-%20CUSTON%2042*%0A%0AHola%20Eduardo%20Damiani%2C%20quisiera%20solicitar%20cotizaci%C3%B3n%20del%20Custon%2042%20Hard%20Top." target="_blank" rel="noopener noreferrer" class="btn-bugatti">
+              COTIZAR UNIDAD
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- SHOWCASE 3: CUSTON 40 -->
+      <section class="bugatti-showcase-section" aria-label="Custon 40 Showcase">
+        <div class="showcase-bg-media">
+          <img src="cruceros/modelos/modelo_custon_40.jpg" alt="Custon 40 Cruising" loading="lazy">
+        </div>
+        <div class="showcase-vignette-left"></div>
+        <div class="showcase-content-box">
+          <div class="showcase-eyebrow">DISEÑO CONTEMPORÁNEO // PUR SANG NAVAL</div>
+          <h2 class="showcase-vessel-title">CUSTON 40</h2>
+          <p class="showcase-narrative">
+            Revestimientos interiores en roble de cape y cueros ecológicos. Una imponente superficie acristalada de proa a popa que ofrece vistas panorámicas al Río de la Plata y un andar dócil en cualquier régimen de navegación.
+          </p>
+
+          <div class="showcase-specs-cluster">
+            <div class="showcase-spec-unit">
+              <span class="showcase-spec-k">Eslora</span>
+              <span class="showcase-spec-v">12.36 M</span>
+            </div>
+            <div class="showcase-spec-unit">
+              <span class="showcase-spec-k">Potencia</span>
+              <span class="showcase-spec-v">800 HP</span>
+            </div>
+            <div class="showcase-spec-unit">
+              <span class="showcase-spec-k">Combustible</span>
+              <span class="showcase-spec-v">1.200 L</span>
+            </div>
+            <div class="showcase-spec-unit">
+              <span class="showcase-spec-k">Desplazamiento</span>
+              <span class="showcase-spec-v">10 TON</span>
+            </div>
+          </div>
+
+          <div class="hero-actions-row">
+            <button class="btn-bugatti btn-bugatti-primary" onclick="openModelModal('custon-40')">
+              DOSSIER TÉCNICO
+            </button>
+            <a href="https://wa.me/5491147446468?text=*CONSULTA%20VIP%20-%20CUSTON%2040*%0A%0AHola%20Eduardo%20Damiani%2C%20quisiera%20solicitar%20cotizaci%C3%B3n%20del%20Custon%2040." target="_blank" rel="noopener noreferrer" class="btn-bugatti">
+              COTIZAR UNIDAD
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 5. THE COMPLETE FLEET (BUGATTI MODELS WIDESCREEN INDEX) -->
+    <section id="showroom" class="section-fleet-index" aria-label="Catálogo de la Flota Completa">
+      <div class="fleet-container">
+        <div class="section-editorial-header">
+          <div>
+            <div class="section-label">// LA FLOTA CUSTON</div>
+            <h2 class="section-main-heading">LINAJE NAVAL COMPLETO</h2>
+          </div>
+          <p class="section-sub-desc">
+            Diez modelos construidos artesanalmente en San Fernando. Elija una categoría o abra la ficha técnica extendida para examinar planos, comodidades y equipamiento de serie.
+          </p>
+        </div>
+
+        <!-- Category Filter Tabs -->
+        <div class="filter-tabs-row" role="tablist">
+          <button class="tab-pill active" onclick="filterFleet('all', this)" role="tab">TODOS [10]</button>
+          <button class="tab-pill" onclick="filterFleet('flybridge', this)" role="tab">YATES FLYBRIDGE [3]</button>
+          <button class="tab-pill" onclick="filterFleet('coupe', this)" role="tab">HARD TOP COUPÉ [3]</button>
+          <button class="tab-pill" onclick="filterFleet('sport', this)" role="tab">SPORT CRUISERS [4]</button>
+        </div>
+
+        <!-- Widescreen Cards Grid (All 10 Models) -->
+        <div id="fleet-cards-wrap" class="fleet-widescreen-grid">
+
+          <!-- 1. PREVEZA 62 -->
+          <article class="vessel-cinema-card sharp-edge" data-cat="flybridge">
+            <div class="vessel-card-media">
+              <img src="cruceros/modelos/modelo_preveza_62.jpg" alt="PREVEZA 62" loading="lazy">
+              <span class="vessel-category-tag">Yates Flybridge</span>
+            </div>
+            <div class="vessel-card-info">
+              <div>
+                <div class="vessel-card-header">
+                  <h3 class="vessel-card-title">PREVEZA 62</h3>
+                  <span class="vessel-card-eslora">20.60 M</span>
+                </div>
+                <p class="vessel-card-tagline">Nave Insignia de Máximo Porte, 2.300 HP y Lujo Residencial</p>
+                <div class="vessel-card-specs-row sharp-edge">
+                  <div class="card-spec-box"><span class="k">Manga</span><span class="v">5.15 m</span></div>
+                  <div class="card-spec-box"><span class="k">Combustible</span><span class="v">4.000 L</span></div>
+                  <div class="card-spec-box"><span class="k">Habitabilidad</span><span class="v">3 Cam / 2 Baños</span></div>
+                </div>
+              </div>
+              <div class="vessel-card-actions">
+                <button class="btn-bugatti btn-bugatti-sm btn-bugatti-primary" onclick="openModelModal('preveza-62')">FICHA TÉCNICA</button>
+                <a href="https://wa.me/5491147446468?text=*CONSULTA%20-%20PREVEZA%2062*" target="_blank" rel="noopener noreferrer" class="btn-bugatti btn-bugatti-sm">COTIZAR</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 2. CUSTON 45 -->
+          <article class="vessel-cinema-card sharp-edge" data-cat="flybridge">
+            <div class="vessel-card-media">
+              <img src="cruceros/modelos/modelo_custon_cruiser_45.jpg" alt="CUSTON 45" loading="lazy">
+              <span class="vessel-category-tag">Yates Flybridge</span>
+            </div>
+            <div class="vessel-card-info">
+              <div>
+                <div class="vessel-card-header">
+                  <h3 class="vessel-card-title">CUSTON 45</h3>
+                  <span class="vessel-card-eslora">14.10 M</span>
+                </div>
+                <p class="vessel-card-tagline">Marcado Estilo Europeo para Vivir a Bordo con Confort Supremo</p>
+                <div class="vessel-card-specs-row sharp-edge">
+                  <div class="card-spec-box"><span class="k">Manga</span><span class="v">4.26 m</span></div>
+                  <div class="card-spec-box"><span class="k">Potencia</span><span class="v">900 HP</span></div>
+                  <div class="card-spec-box"><span class="k">Habitabilidad</span><span class="v">3 Cam / 2 Baños</span></div>
+                </div>
+              </div>
+              <div class="vessel-card-actions">
+                <button class="btn-bugatti btn-bugatti-sm btn-bugatti-primary" onclick="openModelModal('custon-45')">FICHA TÉCNICA</button>
+                <a href="https://wa.me/5491147446468?text=*CONSULTA%20-%20CUSTON%2045*" target="_blank" rel="noopener noreferrer" class="btn-bugatti btn-bugatti-sm">COTIZAR</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 3. CUSTON 42 COUPÉ HT -->
+          <article class="vessel-cinema-card sharp-edge" data-cat="coupe">
+            <div class="vessel-card-media">
+              <img src="cruceros/modelos/modelo_custon_42.jpg" alt="CUSTON 42 COUPÉ HT" loading="lazy">
+              <span class="vessel-category-tag">Hard Top Coupé</span>
+            </div>
+            <div class="vessel-card-info">
+              <div>
+                <div class="vessel-card-header">
+                  <h3 class="vessel-card-title">CUSTON 42 HT</h3>
+                  <span class="vessel-card-eslora">12.85 M</span>
+                </div>
+                <p class="vessel-card-tagline">Líneas Afiladas, Techo Rígido y Amplitud Social Integrada</p>
+                <div class="vessel-card-specs-row sharp-edge">
+                  <div class="card-spec-box"><span class="k">Manga</span><span class="v">4.03 m</span></div>
+                  <div class="card-spec-box"><span class="k">Potencia</span><span class="v">760 HP</span></div>
+                  <div class="card-spec-box"><span class="k">Desplazamiento</span><span class="v">11 Ton</span></div>
+                </div>
+              </div>
+              <div class="vessel-card-actions">
+                <button class="btn-bugatti btn-bugatti-sm btn-bugatti-primary" onclick="openModelModal('custon-42')">FICHA TÉCNICA</button>
+                <a href="https://wa.me/5491147446468?text=*CONSULTA%20-%20CUSTON%2042*" target="_blank" rel="noopener noreferrer" class="btn-bugatti btn-bugatti-sm">COTIZAR</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 4. CUSTON 40 -->
+          <article class="vessel-cinema-card sharp-edge" data-cat="coupe">
+            <div class="vessel-card-media">
+              <img src="cruceros/modelos/modelo_custon_40.jpg" alt="CUSTON 40" loading="lazy">
+              <span class="vessel-category-tag">Hard Top Coupé</span>
+            </div>
+            <div class="vessel-card-info">
+              <div>
+                <div class="vessel-card-header">
+                  <h3 class="vessel-card-title">CUSTON 40</h3>
+                  <span class="vessel-card-eslora">12.36 M</span>
+                </div>
+                <p class="vessel-card-tagline">Superficie Vidriada Panorámica y Revestimientos en Roble de Cape</p>
+                <div class="vessel-card-specs-row sharp-edge">
+                  <div class="card-spec-box"><span class="k">Manga</span><span class="v">4.03 m</span></div>
+                  <div class="card-spec-box"><span class="k">Potencia</span><span class="v">800 HP</span></div>
+                  <div class="card-spec-box"><span class="k">Combustible</span><span class="v">1.200 L</span></div>
+                </div>
+              </div>
+              <div class="vessel-card-actions">
+                <button class="btn-bugatti btn-bugatti-sm btn-bugatti-primary" onclick="openModelModal('custon-40')">FICHA TÉCNICA</button>
+                <a href="https://wa.me/5491147446468?text=*CONSULTA%20-%20CUSTON%2040*" target="_blank" rel="noopener noreferrer" class="btn-bugatti btn-bugatti-sm">COTIZAR</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 5. CUSTON 38 FLY -->
+          <article class="vessel-cinema-card sharp-edge" data-cat="flybridge">
+            <div class="vessel-card-media">
+              <img src="cruceros/modelos/modelo_custon_38.jpg" alt="CUSTON 38 FLY" loading="lazy">
+              <span class="vessel-category-tag">Yates Flybridge</span>
+            </div>
+            <div class="vessel-card-info">
+              <div>
+                <div class="vessel-card-header">
+                  <h3 class="vessel-card-title">CUSTON 38 FLY</h3>
+                  <span class="vessel-card-eslora">12.64 M</span>
+                </div>
+                <p class="vessel-card-tagline">Crucero Clásico con Flybridge, Gran Altura y Doble Salón</p>
+                <div class="vessel-card-specs-row sharp-edge">
+                  <div class="card-spec-box"><span class="k">Manga</span><span class="v">4.03 m</span></div>
+                  <div class="card-spec-box"><span class="k">Potencia</span><span class="v">800 HP</span></div>
+                  <div class="card-spec-box"><span class="k">Habitabilidad</span><span class="v">2 Cam / 2 Baños</span></div>
+                </div>
+              </div>
+              <div class="vessel-card-actions">
+                <button class="btn-bugatti btn-bugatti-sm btn-bugatti-primary" onclick="openModelModal('custon-38')">FICHA TÉCNICA</button>
+                <a href="https://wa.me/5491147446468?text=*CONSULTA%20-%20CUSTON%2038*" target="_blank" rel="noopener noreferrer" class="btn-bugatti btn-bugatti-sm">COTIZAR</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 6. CUSTON ESPECIAL -->
+          <article class="vessel-cinema-card sharp-edge" data-cat="sport">
+            <div class="vessel-card-media">
+              <img src="cruceros/modelos/modelo_custon_day_cruiser.jpg" alt="CUSTON ESPECIAL" loading="lazy">
+              <span class="vessel-category-tag">Sport Cruisers</span>
+            </div>
+            <div class="vessel-card-info">
+              <div>
+                <div class="vessel-card-header">
+                  <h3 class="vessel-card-title">CUSTON ESPECIAL</h3>
+                  <span class="vessel-card-eslora">9.50 M</span>
+                </div>
+                <p class="vessel-card-tagline">El Éxito Náutico: Gran Camarote en L, Termotanque y 3 Camas</p>
+                <div class="vessel-card-specs-row sharp-edge">
+                  <div class="card-spec-box"><span class="k">Manga</span><span class="v">2.85 m</span></div>
+                  <div class="card-spec-box"><span class="k">Calado</span><span class="v">0.60 m</span></div>
+                  <div class="card-spec-box"><span class="k">Capacidad</span><span class="v">8 Personas</span></div>
+                </div>
+              </div>
+              <div class="vessel-card-actions">
+                <button class="btn-bugatti btn-bugatti-sm btn-bugatti-primary" onclick="openModelModal('custon-especial')">FICHA TÉCNICA</button>
+                <a href="https://wa.me/5491147446468?text=*CONSULTA%20-%20CUSTON%20ESPECIAL*" target="_blank" rel="noopener noreferrer" class="btn-bugatti btn-bugatti-sm">COTIZAR</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 7. CUSTON CROSS -->
+          <article class="vessel-cinema-card sharp-edge" data-cat="sport">
+            <div class="vessel-card-media">
+              <img src="cruceros/modelos/custon_cross.jpg" alt="CUSTON CROSS" loading="lazy">
+              <span class="vessel-category-tag">Sport Cruisers</span>
+            </div>
+            <div class="vessel-card-info">
+              <div>
+                <div class="vessel-card-header">
+                  <h3 class="vessel-card-title">CUSTON CROSS</h3>
+                  <span class="vessel-card-eslora">9.75 M</span>
+                </div>
+                <p class="vessel-card-tagline">Potente Motorización Fuera de Borda y Habitabilidad Familiar</p>
+                <div class="vessel-card-specs-row sharp-edge">
+                  <div class="card-spec-box"><span class="k">Manga</span><span class="v">2.45 m</span></div>
+                  <div class="card-spec-box"><span class="k">Potencia</span><span class="v">300 HP</span></div>
+                  <div class="card-spec-box"><span class="k">Calado</span><span class="v">0.40 m</span></div>
+                </div>
+              </div>
+              <div class="vessel-card-actions">
+                <button class="btn-bugatti btn-bugatti-sm btn-bugatti-primary" onclick="openModelModal('custon-cross')">FICHA TÉCNICA</button>
+                <a href="https://wa.me/5491147446468?text=*CONSULTA%20-%20CUSTON%20CROSS*" target="_blank" rel="noopener noreferrer" class="btn-bugatti btn-bugatti-sm">COTIZAR</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 8. PREVEZA 300 -->
+          <article class="vessel-cinema-card sharp-edge" data-cat="sport">
+            <div class="vessel-card-media">
+              <img src="cruceros/modelos/modelo_preveza_300.jpg" alt="PREVEZA 300" loading="lazy">
+              <span class="vessel-category-tag">Sport Cruisers</span>
+            </div>
+            <div class="vessel-card-info">
+              <div>
+                <div class="vessel-card-header">
+                  <h3 class="vessel-card-title">PREVEZA 300</h3>
+                  <span class="vessel-card-eslora">10.10 M</span>
+                </div>
+                <p class="vessel-card-tagline">Cockpit Extendido, Conejera a Media Eslora y Motorización Dentro/Fuera</p>
+                <div class="vessel-card-specs-row sharp-edge">
+                  <div class="card-spec-box"><span class="k">Manga</span><span class="v">3.00 m</span></div>
+                  <div class="card-spec-box"><span class="k">Potencia</span><span class="v">300 HP</span></div>
+                  <div class="card-spec-box"><span class="k">Combustible</span><span class="v">500 L</span></div>
+                </div>
+              </div>
+              <div class="vessel-card-actions">
+                <button class="btn-bugatti btn-bugatti-sm btn-bugatti-primary" onclick="openModelModal('preveza-300')">FICHA TÉCNICA</button>
+                <a href="https://wa.me/5491147446468?text=*CONSULTA%20-%20PREVEZA%20300*" target="_blank" rel="noopener noreferrer" class="btn-bugatti btn-bugatti-sm">COTIZAR</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 9. CUSTON COMPAC -->
+          <article class="vessel-cinema-card sharp-edge" data-cat="coupe">
+            <div class="vessel-card-media">
+              <img src="cruceros/modelos/modelo_custon_compac.jpg" alt="CUSTON COMPAC" loading="lazy">
+              <span class="vessel-category-tag">Hard Top Coupé</span>
+            </div>
+            <div class="vessel-card-info">
+              <div>
+                <div class="vessel-card-header">
+                  <h3 class="vessel-card-title">CUSTON COMPAC</h3>
+                  <span class="vessel-card-eslora">10.05 M</span>
+                </div>
+                <p class="vessel-card-tagline">Techo Rígido, Planchada de 1.30 m y Ambiente Luminoso</p>
+                <div class="vessel-card-specs-row sharp-edge">
+                  <div class="card-spec-box"><span class="k">Manga</span><span class="v">3.00 m</span></div>
+                  <div class="card-spec-box"><span class="k">Puntal</span><span class="v">1.43 m</span></div>
+                  <div class="card-spec-box"><span class="k">Potencia</span><span class="v">350 HP</span></div>
+                </div>
+              </div>
+              <div class="vessel-card-actions">
+                <button class="btn-bugatti btn-bugatti-sm btn-bugatti-primary" onclick="openModelModal('custon-compac')">FICHA TÉCNICA</button>
+                <a href="https://wa.me/5491147446468?text=*CONSULTA%20-%20CUSTON%20COMPAC*" target="_blank" rel="noopener noreferrer" class="btn-bugatti btn-bugatti-sm">COTIZAR</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- 10. CUSTON 35 SPORT -->
+          <article class="vessel-cinema-card sharp-edge" data-cat="sport">
+            <div class="vessel-card-media">
+              <img src="cruceros/modelos/modelo_custon_35.jpg" alt="CUSTON 35 SPORT" loading="lazy">
+              <span class="vessel-category-tag">Sport Cruisers</span>
+            </div>
+            <div class="vessel-card-info">
+              <div>
+                <div class="vessel-card-header">
+                  <h3 class="vessel-card-title">CUSTON 35 SPORT</h3>
+                  <span class="vessel-card-eslora">10.50 M</span>
+                </div>
+                <p class="vessel-card-tagline">Day Cruiser Ágil, Camarote Compartimentado y Navegación Dócil</p>
+                <div class="vessel-card-specs-row sharp-edge">
+                  <div class="card-spec-box"><span class="k">Manga</span><span class="v">3.20 m</span></div>
+                  <div class="card-spec-box"><span class="k">Potencia</span><span class="v">400 HP</span></div>
+                  <div class="card-spec-box"><span class="k">Agua</span><span class="v">180 L</span></div>
+                </div>
+              </div>
+              <div class="vessel-card-actions">
+                <button class="btn-bugatti btn-bugatti-sm btn-bugatti-primary" onclick="openModelModal('custon-35')">FICHA TÉCNICA</button>
+                <a href="https://wa.me/5491147446468?text=*CONSULTA%20-%20CUSTON%2035*" target="_blank" rel="noopener noreferrer" class="btn-bugatti btn-bugatti-sm">COTIZAR</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. SUR MESURE ATELIER (BUGATTI BESPOKE NAVAL PROGRAM) -->
+    <section id="sur-mesure" class="section-sur-mesure" aria-label="Atelier Sur Mesure Naval">
+      <div class="sur-mesure-wrap">
+        <div class="sur-mesure-hero-block">
+          <div class="sur-mesure-narrative">
+            <div class="section-label">// PROGRAMA BESPOKE</div>
+            <h2 class="section-main-heading">SUR MESURE NAVAL</h2>
+            <p>
+              Inspirado en el programa <em>Sur Mesure</em> de Bugatti, Astillero Custon concibe cada unidad como una obra naval irrepetible. No producimos en masa: cada armador define los parámetros hidrodinámicos, las maderas nobles, el tono del gelcoat del casco y las texturas de la tapicería italiana.
+            </p>
+            <p>
+              En nuestro varadero de San Fernando, la artesanía de resina isoftálica aplicada a mano convive con el cálculo de estructuras navales y la ebanistería sobre roble de cape estufado.
+            </p>
+          </div>
+
+          <div class="sur-mesure-media-dual">
+            <div class="sur-mesure-img-frame sharp-edge">
+              <img src="assets/artesania_estructural.jpg" alt="Artesanía Estructural Naval">
+              <div class="sur-mesure-img-caption">Laminado Isoftálico a Mano</div>
+            </div>
+            <div class="sur-mesure-img-frame sharp-edge">
+              <img src="assets/linea_de_construccion.jpg" alt="Línea de Construcción en Varadero">
+              <div class="sur-mesure-img-caption">Montaje Estructural en Varadero</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Pillars -->
+        <div class="sur-mesure-pillars">
+          <div class="pillar-card sharp-edge">
+            <div class="pillar-num">01 // CASCO & GELCOAT</div>
+            <h3 class="pillar-title">HIDRODINÁMICA V PROFUNDA</h3>
+            <p class="pillar-desc">
+              Resinas isoftálicas de alta barrera osmótica con pigmentación personalizada en autoclave para un brillo eterno frente a aguas dulces o saladas.
+            </p>
+          </div>
+
+          <div class="pillar-card sharp-edge">
+            <div class="pillar-num">02 // EBANISTERÍA</div>
+            <h3 class="pillar-title">ROBLE DE CAPE & TECA</h3>
+            <p class="pillar-desc">
+              Maderas nobles seleccionadas por veta y curadas a humedad controlada. Enchapados a mano con herrajes de acero inoxidable náutico grado 316.
+            </p>
+          </div>
+
+          <div class="pillar-card sharp-edge">
+            <div class="pillar-num">03 // TAPICERÍA</div>
+            <h3 class="pillar-title">CUEROS HIDRÓFUGOS</h3>
+            <p class="pillar-desc">
+              Cueros ecológicos y náuticos de procedencia europea con tratamiento UV, costura doble en hilo marino y espumas de celda cerrada sin absorción de agua.
+            </p>
+          </div>
+
+          <div class="pillar-card sharp-edge">
+            <div class="pillar-num">04 // PROPULSIÓN</div>
+            <h3 class="pillar-title">INGENIERÍA A MEDIDA</h3>
+            <p class="pillar-desc">
+              Líneas de eje tradicionales, transmisiones Volvo Penta IPS con joystick docking o motorizaciones fuera de borda según el puerto de amarre del armador.
+            </p>
+          </div>
+        </div>
+
+        <!-- Interactive Visualizer (Bespoke Selector) -->
+        <div class="bespoke-configurator-card sharp-edge">
+          <div class="configurator-grid">
+            <div class="configurator-preview-pane sharp-edge">
+              <div class="preview-telemetry-badge">SIMULADOR SUR MESURE // 360° AESTHETICS</div>
+
+              <div class="hull-preview-canvas">
+                <!-- Architectural Yacht Silhouette SVG -->
+                <svg viewBox="0 0 400 150" class="hull-svg-shape">
+                  <path id="svg-deck" d="M 40 85 L 140 50 L 260 50 L 320 85 Z" fill="#1C1C1E" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+                  <path id="svg-cabin" d="M 120 50 L 160 25 L 240 25 L 270 50 Z" fill="#2C2C2E" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+                  <path id="svg-glass" d="M 165 30 L 220 30 L 235 48 L 155 48 Z" fill="#48484A" opacity="0.8"/>
+                  <path id="svg-hull" d="M 25 85 L 360 85 L 340 120 L 70 120 Z" fill="#0A0A0A" stroke="#FFFFFF" stroke-width="1.5"/>
+                  <line x1="25" y1="120" x2="375" y2="120" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
+                </svg>
+              </div>
+
+              <div id="cfg-serial-badge" class="preview-code-badge">CUSTON-SM-2026-081</div>
+            </div>
+
+            <div class="configurator-options-pane">
+              <div>
+                <div class="config-group-title">1. ACABADO DEL GELCOAT (CASCO)</div>
+                <div class="swatches-row">
+                  <button class="swatch-btn selected" onclick="setBespokeColor('black', '#0A0A0A', this)">
+                    <span class="swatch-circle" style="background: #0A0A0A;"></span> NOCTURNE BLACK
+                  </button>
+                  <button class="swatch-btn" onclick="setBespokeColor('glacier', '#E5E5EA', this)">
+                    <span class="swatch-circle" style="background: #E5E5EA;"></span> BIANCO GLACIER
+                  </button>
+                  <button class="swatch-btn" onclick="setBespokeColor('blue', '#0B2545', this)">
+                    <span class="swatch-circle" style="background: #0B2545;"></span> BUGATTI BLEU
+                  </button>
+                  <button class="swatch-btn" onclick="setBespokeColor('titanium', '#3A3D40', this)">
+                    <span class="swatch-circle" style="background: #3A3D40;"></span> SLATE TITANIUM
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <div class="config-group-title">2. EBANISTERÍA NAVAL INTERIOR</div>
+                <div class="swatches-row">
+                  <button class="swatch-btn selected" onclick="setBespokeWood('roble', this)">
+                    ROBLE DE CAPE
+                  </button>
+                  <button class="swatch-btn" onclick="setBespokeWood('teca', this)">
+                    TECA DE BIRMANIA
+                  </button>
+                  <button class="swatch-btn" onclick="setBespokeWood('nogal', this)">
+                    NOGAL OSCURO
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <div class="config-group-title">3. ALTA PELETERÍA & TAPICERÍA</div>
+                <div class="swatches-row">
+                  <button class="swatch-btn selected" onclick="setBespokeLeather('crema', this)">
+                    CUERO CREMA MARFIL
+                  </button>
+                  <button class="swatch-btn" onclick="setBespokeLeather('negro', this)">
+                    CUERO ÁGATA NEGRO
+                  </button>
+                  <button class="swatch-btn" onclick="setBespokeLeather('cognac', this)">
+                    COGNAC VINTAGE
+                  </button>
+                </div>
+              </div>
+
+              <div style="margin-top: 1rem;">
+                <button class="btn-bugatti btn-bugatti-primary" onclick="dispatchBespokeWhatsApp()">
+                  DISPATCH CONFIGURACIÓN VÍA WHATSAPP
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 7. SAN FERNANDO SHIPYARD & HERITAGE (MOLSHEIM COUNTERPART) -->
+    <section id="varadero" class="section-heritage-yard" aria-label="El Astillero San Fernando">
+      <div class="yard-container">
+        <div class="yard-grid">
+          <div class="yard-media-spread sharp-edge">
+            <img src="assets/linea_de_construccion.jpg" alt="Línea de Construcción Astillero Custon San Fernando" loading="lazy">
+            <div class="yard-badge-overlay sharp-edge">
+              <div class="yard-badge-coord">34°26'18"S 58°33'42"W</div>
+              <div class="yard-badge-text">SAN FERNANDO // CAPITAL NACIONAL DE LA NÁUTICA</div>
+            </div>
+          </div>
+
+          <div class="yard-info-narrative">
+            <div class="section-label">// ORIGEN & EXCELENCIA</div>
+            <h2 class="section-main-heading">LA MANUFACTURE DE SAN FERNANDO</h2>
+            <p style="color: #A0A0A5; font-size: 1.05rem; line-height: 1.7;">
+              Así como Bugatti late en el histórico Molsheim de Alsacia, <strong>Astillero Custon S.A.</strong> forja su reputación desde hace más de tres décadas y media en las riberas de San Fernando, la cuna naval de la República Argentina.
+            </p>
+            <p style="color: #A0A0A5; font-size: 1.05rem; line-height: 1.7;">
+              Cada casco que toca el agua cuenta con la certificación de la <strong>Cámara Argentina de Constructores de Embarcaciones (CACEL)</strong> y los más rigurosos controles de estanqueidad, balance y resistencia estructural.
+            </p>
+
+            <div class="yard-stats-row">
+              <div class="yard-stat-item">
+                <span class="num">+35</span>
+                <span class="txt">Años de Maestría Naval</span>
+              </div>
+              <div class="yard-stat-item">
+                <span class="num">+1.300</span>
+                <span class="txt">Embarcaciones Botadas</span>
+              </div>
+              <div class="yard-stat-item">
+                <span class="num">CACEL</span>
+                <span class="txt">Certificación Oficial</span>
+              </div>
+            </div>
+
+            <div>
+              <a href="https://www.google.com/maps?q=San+Fernando+Buenos+Aires+Nautica" target="_blank" rel="noopener noreferrer" class="btn-bugatti">
+                COORDENADAS & VISITA AL VARADERO
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. VIP CONCIERGE & PRIVATE AUDIENCES -->
+    <section id="concierge" class="section-concierge" aria-label="Audiencias Privadas y Contacto VIP">
+      <div class="concierge-wrap">
+        <div class="concierge-card-box sharp-edge">
+          <div class="concierge-direct-info">
+            <div>
+              <div class="section-label">// PRIVILEGIOS VIP</div>
+              <h2 class="section-main-heading" style="font-size: clamp(2rem, 3.5vw, 2.8rem);">AUDIENCIAS PRIVADAS</h2>
+              <p style="color: #A0A0A5; margin-top: 1rem; line-height: 1.6;">
+                La adquisición de una unidad Custon es una experiencia personalizada de principio a fin. El Directorio del astillero recibe a los futuros armadores con cita previa en nuestra sede náutica para coordinar pruebas de navegación y definir detalles de equipamiento.
+              </p>
+            </div>
+
+            <div class="officer-card sharp-edge">
+              <div class="officer-role">DIRECCIÓN COMERCIAL OFICIAL</div>
+              <div class="officer-name">EDUARDO DAMIANI</div>
+              <div class="officer-phone">+54 9 11 4744-6468</div>
+              <a href="https://wa.me/5491147446468?text=*CONSULTA%20DIRECTA%20-%20DIRECCI%C3%93N%20CUSTON*" target="_blank" rel="noopener noreferrer" class="btn-bugatti btn-bugatti-sm" style="margin-top: 1rem;">
+                MENSAJE DIRECTO VÍA WHATSAPP
+              </a>
+            </div>
+          </div>
+
+          <form class="concierge-form" onsubmit="handleConciergeSubmit(event)">
+            <div class="form-field">
+              <label for="form-name">NOMBRE Y APELLIDO DEL ARMADOR</label>
+              <input type="text" id="form-name" class="form-input-hairline" required placeholder="Ej. Dr. Horacio Gómez">
+            </div>
+
+            <div class="form-field">
+              <label for="form-phone">TELÉFONO / WHATSAPP INTERNACIONAL</label>
+              <input type="tel" id="form-phone" class="form-input-hairline" required placeholder="+54 9 11 ...">
+            </div>
+
+            <div class="form-field">
+              <label for="form-model">EMBARCACIÓN DE INTERÉS</label>
+              <select id="form-model" class="form-input-hairline" required>
+                <option value="PREVEZA 62">PREVEZA 62 (Nave Insignia // 20.60 m)</option>
+                <option value="CUSTON 45">CUSTON 45 (Yate Flybridge // 14.10 m)</option>
+                <option value="CUSTON 42">CUSTON 42 (Hard Top Coupé // 12.85 m)</option>
+                <option value="CUSTON 40">CUSTON 40 (Hard Top Coupé // 12.36 m)</option>
+                <option value="CUSTON 38 FLY">CUSTON 38 FLY (Flybridge // 12.64 m)</option>
+                <option value="CUSTON ESPECIAL">CUSTON ESPECIAL (Sport Cruiser // 9.50 m)</option>
+                <option value="CUSTON CROSS">CUSTON CROSS (Sport Cruiser // 9.75 m)</option>
+                <option value="PREVEZA 300">PREVEZA 300 (Sport Cruiser // 10.10 m)</option>
+                <option value="CUSTON COMPAC">CUSTON COMPAC (Hard Top // 10.05 m)</option>
+                <option value="CUSTON 35 SPORT">CUSTON 35 SPORT (Day Cruiser // 10.50 m)</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="form-notes">PUERTO DE AMARRE O COMENTARIOS PARTICULARES</label>
+              <input type="text" id="form-notes" class="form-input-hairline" placeholder="Ej. Amarre en San Fernando / Río de la Plata...">
+            </div>
+
+            <button type="submit" class="btn-bugatti btn-bugatti-primary" style="margin-top: 1rem;">
+              SOLICITAR DOSSIER & AUDIENCIA
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 9. BUGATTI TECHNICAL DOSSIER MODAL -->
+  <div id="dossier-modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-frame sharp-edge">
+      <button class="modal-close-trigger" onclick="closeModelModal()" aria-label="Cerrar Ficha Técnica">✕</button>
+
+      <div class="modal-media-col">
+        <img id="modal-img" src="cruceros/modelos/modelo_preveza_62.jpg" alt="Vessel Showcase">
+      </div>
+
+      <div class="modal-info-col">
+        <div>
+          <div id="modal-cat" class="modal-cat-tag">YATES FLYBRIDGE</div>
+          <h2 id="modal-title" class="modal-title">PREVEZA 62</h2>
+          <p id="modal-desc" class="modal-desc">
+            Descripción técnica y arquitectónica de la embarcación.
+          </p>
+
+          <table class="modal-specs-table">
+            <tbody id="modal-specs-body">
+              <!-- Dynamically Populated -->
+            </tbody>
+          </table>
+        </div>
+
+        <div>
+          <a id="modal-whatsapp-cta" href="#" target="_blank" rel="noopener noreferrer" class="btn-bugatti btn-bugatti-primary" style="width: 100%;">
+            SOLICITAR COTIZACIÓN DE ESTE MODELO
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. BUGATTI MONUMENTAL FOOTER -->
+  <footer id="site-footer">
+    <div class="footer-wrap">
+      <div class="footer-brand-masthead">
+        <div class="footer-giant-wordmark">ASTILLERO CUSTON</div>
+      </div>
+
+      <div class="footer-columns-grid">
+        <div>
+          <div class="footer-col-title">MODELOS & FLOTA</div>
+          <ul class="footer-links-list">
+            <li><a href="javascript:void(0)" onclick="openModelModal('preveza-62')">Preveza 62 Flagship</a></li>
+            <li><a href="javascript:void(0)" onclick="openModelModal('custon-45')">Custon 45 Grand Croiseur</a></li>
+            <li><a href="javascript:void(0)" onclick="openModelModal('custon-42')">Custon 42 Coupé HT</a></li>
+            <li><a href="javascript:void(0)" onclick="openModelModal('custon-40')">Custon 40 Vidriado</a></li>
+            <li><a href="javascript:void(0)" onclick="openModelModal('custon-38')">Custon 38 Flybridge</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">SPORT CRUISERS</div>
+          <ul class="footer-links-list">
+            <li><a href="javascript:void(0)" onclick="openModelModal('custon-especial')">Custon Especial 9.50</a></li>
+            <li><a href="javascript:void(0)" onclick="openModelModal('custon-cross')">Custon Cross Outboard</a></li>
+            <li><a href="javascript:void(0)" onclick="openModelModal('preveza-300')">Preveza 300 Versátil</a></li>
+            <li><a href="javascript:void(0)" onclick="openModelModal('custon-compac')">Custon Compac HT</a></li>
+            <li><a href="javascript:void(0)" onclick="openModelModal('custon-35')">Custon 35 Sport</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">ATELIER & LEGADO</div>
+          <ul class="footer-links-list">
+            <li><a href="#sur-mesure">Programa Sur Mesure</a></li>
+            <li><a href="#varadero">La Manufacture San Fernando</a></li>
+            <li><a href="#varadero">Certificación CACEL</a></li>
+            <li><a href="#concierge">Dirección Eduardo Damiani</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">SEDE SAN FERNANDO</div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1rem;">
+            Capital Nacional de la Náutica<br>
+            Provincia de Buenos Aires, República Argentina.<br>
+            Línea Directa: +54 9 11 4744-6468
+          </p>
+          <a href="https://wa.me/5491147446468" target="_blank" rel="noopener noreferrer" class="btn-bugatti btn-bugatti-sm">
+            WHATSAPP CONCIERGE
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-bottom-row">
+        <div>
+          © 2026 ASTILLERO CUSTON S.A. TODOS LOS DERECHOS RESERVADOS. HIGH LUXURY NAVAL ARCHITECTURE.
+        </div>
+        <button class="footer-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+          ↑ VOLVER ARRIBA
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 11. EMBEDDED JAVASCRIPT LOGIC -->
+  <script>
+    // Complete 10-Vessel Data Store
+    const FLEET_STORE = {
+      "preveza-62": {
+        name: "PREVEZA 62",
+        category: "Yates Flybridge",
+        tagline: "El Pináculo de la Arquitectura Naval Argentina",
+        image: "cruceros/modelos/modelo_preveza_62.jpg",
+        description: "Este barco que supera los 20 metros de eslora es el de mayor porte que se construye en el astillero Custon. Fusión sublime de estilo, confort residencial y agilidad en navegación, con diseño clásico y elegante concebido para los armadores más exigentes del Río de la Plata y aguas internacionales.",
+        specs: [
+          ["Eslora Total", "20.60 m"],
+          ["Manga", "5.15 m"],
+          ["Desplazamiento", "28 Toneladas"],
+          ["Capacidad Combustible", "4.000 Litros"],
+          ["Capacidad Agua Dulce", "1.200 Litros"],
+          ["Motorización", "2 x 740 a 1.150 HP c/u (hasta 2.300 HP)"],
+          ["Distribución Interior", "3 Camarotes Privados / 2 Baños en Suite"]
+        ]
+      },
+      "custon-45": {
+        name: "CUSTON 45",
+        category: "Yates Flybridge",
+        tagline: "Marcado Estilo Europeo para Vivir a Bordo",
+        image: "cruceros/modelos/modelo_custon_cruiser_45.jpg",
+        description: "Un crucero de marcada estirpe europea con líneas contemporáneas, inmensa superficie vidriada perimetral y máximo confort interior. Diseñado bajo el concepto 'un barco para vivir a bordo', ofrece tres amplios camarotes independientes y dos baños completos de primer nivel.",
+        specs: [
+          ["Eslora Total", "14.10 m"],
+          ["Manga", "4.26 m"],
+          ["Motorización", "2 motores de 370 a 450 HP c/u"],
+          ["Potencia Máxima", "900 HP"],
+          ["Distribución Interior", "3 Camarotes / 2 Baños Completos"],
+          ["Superficie Vidriada", "Perimetral Panorámica de Alta Luz"]
+        ]
+      },
+      "custon-42": {
+        name: "CUSTON 42 COUPÉ HT",
+        category: "Hard Top Coupé",
+        tagline: "Hard Top Deportivo & Máxima Habitabilidad",
+        image: "cruceros/modelos/modelo_custon_42.jpg",
+        description: "El nuevo referente de la gama Coupé Hard Top del astillero. Techo rígido corredizo, líneas dinámicas y afiladas, y un salón integrado a la planchada de popa que expande el espacio social con una fluidez excepcional.",
+        specs: [
+          ["Eslora Total", "12.85 m"],
+          ["Manga", "4.03 m"],
+          ["Desplazamiento", "11 Toneladas"],
+          ["Motorización", "Bimotorización Diesel / Nafta (hasta 760 HP)"],
+          ["Configuración", "Hard Top con Techo Rígido Integrado"],
+          ["Distribución", "2 Camarotes / Salón Principal / Baño Compartimentado"]
+        ]
+      },
+      "custon-40": {
+        name: "CUSTON 40",
+        category: "Hard Top Coupé",
+        tagline: "Gran Superficie Vidriada & Nobleza de Materiales",
+        image: "cruceros/modelos/modelo_custon_40.jpg",
+        description: "Su diseño moderno, atractivo y con líneas bien marcadas destaca por la enorme superficie vidriada lateral que inunda de luz natural los interiores. Equipado con revestimientos de roble de cape y cueros ecológicos, aire acondicionado, calefacción, heladera con freezer, microondas, audio y TV de serie.",
+        specs: [
+          ["Eslora Total", "12.36 m"],
+          ["Manga", "4.03 m"],
+          ["Puntal", "1.89 m"],
+          ["Calado", "1.30 m"],
+          ["Potencia Total", "800 HP"],
+          ["Desplazamiento", "10 Toneladas"],
+          ["Combustible", "1.200 Litros"],
+          ["Agua Potable", "500 Litros"],
+          ["Camarotes / Baños", "2 Camarotes / 1 Baño de Doble Acceso"],
+          ["Equipamiento Serie", "Aire Acondicionado, Calefacción, Heladera, Cocina Eléctrica"]
+        ]
+      },
+      "custon-38": {
+        name: "CUSTON 38 FLY",
+        category: "Yates Flybridge",
+        tagline: "Líneas Sobrias, Contemporáneas y Doble Puesto de Mando",
+        image: "cruceros/modelos/modelo_custon_38.jpg",
+        description: "Un crucero con flybridge de líneas sumamente agradables, modernas y sobrias. Amplio por fuera y muy cómodo por dentro, con gran altura interior y puesto de gobierno tanto en el salón como en el fly. Dos camarotes y dos baños perfectamente resueltos.",
+        specs: [
+          ["Eslora Total", "12.64 m"],
+          ["Manga", "4.03 m"],
+          ["Desplazamiento", "12 Toneladas"],
+          ["Combustible", "1.200 Litros (Nafta / Diesel)"],
+          ["Agua Potable", "500 Litros"],
+          ["Motorización", "2 Motores de 225 a 400 HP c/u (Línea de eje / IPS)"],
+          ["Camarotes", "2 Camarotes / 2 Baños"]
+        ]
+      },
+      "custon-especial": {
+        name: "CUSTON ESPECIAL",
+        category: "Sport Cruisers",
+        tagline: "El Sport Cruiser Más Probado y Exitoso del Mercado",
+        image: "cruceros/modelos/modelo_custon_day_cruiser.jpg",
+        description: "Con casi 10 metros de eslora, es una de las embarcaciones de mayor éxito de la náutica argentina. El paso primordial de la lancha al crucero con todas las comodidades: cocina completa, termotanque para agua fría y caliente, heladera bajo mesada y capacidad para pernoctar a bordo.",
+        specs: [
+          ["Eslora", "9.50 metros"],
+          ["Manga", "2.85 metros"],
+          ["Calado", "0.60 metros"],
+          ["Peso sin Motor", "3.500 kg"],
+          ["Rango Potencia", "200 a 300 HP nafta / 170 a 220 HP diesel"],
+          ["Tanque Combustible", "300 Litros"],
+          ["Tanque de Agua", "150 Litros"],
+          ["Habilitación", "8 Personas (3 camas / 1 baño compartimentado)"]
+        ]
+      },
+      "custon-cross": {
+        name: "CUSTON CROSS",
+        category: "Sport Cruisers",
+        tagline: "Sport Cruiser Fuera de Borda para Toda la Familia",
+        image: "cruceros/modelos/custon_cross.jpg",
+        description: "Nuevo Sport Cruiser con moderna motorización fuera de borda. Combina la agilidad y practicidad de una lancha con la habitabilidad de un crucero familiar. Cocina completa, heladera bajo mesada y excelente calado para fondear en cualquier rincón del Delta.",
+        specs: [
+          ["Eslora", "9.75 m"],
+          ["Manga", "2.45 m"],
+          ["Calado", "0.40 m"],
+          ["Rango Potencia", "200 a 300 HP fuera de borda"],
+          ["Comodidades", "Cama doble en proa + camarote a media eslora"],
+          ["Baño", "Compartimentado con ducha"]
+        ]
+      },
+      "preveza-300": {
+        name: "PREVEZA 300",
+        category: "Sport Cruisers",
+        tagline: "Agilidad Náutica & Amplitud de Cockpit Interior",
+        image: "cruceros/modelos/modelo_preveza_300.jpg",
+        description: "Desarrollo moderno del Grupo Custon: un sport cruiser versátil y de altas prestaciones. Se destaca la gran amplitud de su cockpit exterior para reuniones sociales y el volumen de su conejera a media eslora.",
+        specs: [
+          ["Eslora", "10.10 m"],
+          ["Manga", "3.00 m"],
+          ["Motorización", "Dentro / Fuera"],
+          ["Combustible", "500 Litros"],
+          ["Potencia Máxima", "300 HP"],
+          ["Habitabilidad", "Conejera a media eslora de gran volumen"]
+        ]
+      },
+      "custon-compac": {
+        name: "CUSTON COMPAC",
+        category: "Hard Top Coupé",
+        tagline: "Techo Rígido, Planchada Extendida y Luminosidad Total",
+        image: "cruceros/modelos/modelo_custon_compac.jpg",
+        description: "Uno de los clásicos totalmente renovado. Su techo rígido minimiza la entrada de agua de lluvia y su gran planchada de popa de 1.30 m sobre 3 m de manga permite estibar un bote auxiliar o moto de agua con total comodidad.",
+        specs: [
+          ["Eslora", "10.05 m"],
+          ["Manga", "3.00 m"],
+          ["Puntal", "1.43 m"],
+          ["Planchada de Popa", "1.30 m de profundidad sobre manga completa"],
+          ["Ambiente Interior", "Monovolumen diáfano y muy luminoso"]
+        ]
+      },
+      "custon-35": {
+        name: "CUSTON 35 SPORT",
+        category: "Sport Cruisers",
+        tagline: "Day Cruiser Contemporáneo & Agilidad en Planeo",
+        image: "cruceros/modelos/modelo_custon_35.jpg",
+        description: "Crucero deportivo que combina una navegabilidad dócil y veloz con un interior refinado y amplio. Cuenta con camarote compartimentado, baño completo y cocina, volcado hacia un estilo limpio y contemporáneo.",
+        specs: [
+          ["Eslora", "10.50 m"],
+          ["Manga", "3.20 m"],
+          ["Rango Potencia", "300 a 400 HP"],
+          ["Agua Potable", "180 Litros"],
+          ["Distribución", "Camarote compartimentado + Baño + Cocina"]
+        ]
+      }
+    };
+
+    // Navbar Scroll Background Transition
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        navbar.classList.add('nav-scrolled');
+      } else {
+        navbar.classList.remove('nav-scrolled');
+      }
+    }, { passive: true });
+
+    // Menu Drawer Logic
+    const menuOverlay = document.getElementById('menu-overlay');
+    const openMenuBtn = document.getElementById('open-menu-btn');
+    const closeMenuBtn = document.getElementById('close-menu-btn');
+    const closeLinks = document.querySelectorAll('.close-menu-link');
+
+    function toggleMenu(open) {
+      if (open) {
+        menuOverlay.classList.add('open');
+        menuOverlay.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('modal-active');
+      } else {
+        menuOverlay.classList.remove('open');
+        menuOverlay.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('modal-active');
+      }
+    }
+
+    openMenuBtn.addEventListener('click', () => toggleMenu(true));
+    closeMenuBtn.addEventListener('click', () => toggleMenu(false));
+    closeLinks.forEach(link => {
+      link.addEventListener('click', () => toggleMenu(false));
+    });
+
+    // Fleet Category Filtering
+    function filterFleet(category, tabBtn) {
+      document.querySelectorAll('.tab-pill').forEach(btn => btn.classList.remove('active'));
+      tabBtn.classList.add('active');
+
+      const cards = document.querySelectorAll('.vessel-cinema-card');
+      cards.forEach(card => {
+        const cardCat = card.getAttribute('data-cat');
+        if (category === 'all' || cardCat === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Bugatti Technical Dossier Modal Logic
+    const dossierModal = document.getElementById('dossier-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalCat = document.getElementById('modal-cat');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDesc = document.getElementById('modal-desc');
+    const modalSpecsBody = document.getElementById('modal-specs-body');
+    const modalWhatsappCta = document.getElementById('modal-whatsapp-cta');
+
+    function openModelModal(modelKey) {
+      const data = FLEET_STORE[modelKey];
+      if (!data) return;
+
+      // Close menu if open
+      toggleMenu(false);
+
+      modalImg.src = data.image;
+      modalImg.alt = data.name;
+      modalCat.textContent = data.category.toUpperCase();
+      modalTitle.textContent = data.name;
+      modalDesc.textContent = data.description;
+
+      // Render specs
+      modalSpecsBody.innerHTML = data.specs.map(([k, v]) => `
+        <tr>
+          <td class="k">${k}</td>
+          <td class="v">${v}</td>
+        </tr>
+      `).join('');
+
+      // Encode WhatsApp CTA
+      const waMsg = encodeURIComponent(`*CONSULTA OFICIAL - ASTILLERO CUSTON*\n\nHola Eduardo Damiani, quisiera consultar la disponibilidad, dossier técnico completo y presupuesto del modelo: *${data.name}*.`);
+      modalWhatsappCta.href = `https://wa.me/5491147446468?text=${waMsg}`;
+
+      dossierModal.classList.add('open');
+      dossierModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-active');
+    }
+
+    function closeModelModal() {
+      dossierModal.classList.remove('open');
+      dossierModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-active');
+    }
+
+    dossierModal.addEventListener('click', (e) => {
+      if (e.target === dossierModal) {
+        closeModelModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModelModal();
+        toggleMenu(false);
+      }
+    });
+
+    // Sur Mesure Configurator State
+    let bespokeState = {
+      colorName: 'NOCTURNE BLACK',
+      colorHex: '#0A0A0A',
+      wood: 'ROBLE DE CAPE',
+      leather: 'CUERO CREMA MARFIL'
+    };
+
+    function setBespokeColor(id, hex, btn) {
+      btn.parentElement.querySelectorAll('.swatch-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+
+      bespokeState.colorHex = hex;
+      bespokeState.colorName = btn.textContent.trim();
+
+      const hull = document.getElementById('svg-hull');
+      if (hull) {
+        hull.setAttribute('fill', hex);
+      }
+      updateSerial();
+    }
+
+    function setBespokeWood(id, btn) {
+      btn.parentElement.querySelectorAll('.swatch-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      bespokeState.wood = btn.textContent.trim();
+      updateSerial();
+    }
+
+    function setBespokeLeather(id, btn) {
+      btn.parentElement.querySelectorAll('.swatch-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      bespokeState.leather = btn.textContent.trim();
+      updateSerial();
+    }
+
+    function updateSerial() {
+      const hash = Math.floor(1000 + Math.random() * 9000);
+      const code = `CUSTON-SM-2026-${hash}`;
+      const badge = document.getElementById('cfg-serial-badge');
+      if (badge) badge.textContent = code;
+      bespokeState.serial = code;
+    }
+
+    function dispatchBespokeWhatsApp() {
+      const serial = bespokeState.serial || 'CUSTON-SM-2026-081';
+      const text = encodeURIComponent(
+        `*CONFIGURACIÓN BESPOKE SUR MESURE NAVAL*\n\n` +
+        `Código de Configuración: *${serial}*\n` +
+        `• Color de Casco (Gelcoat): ${bespokeState.colorName}\n` +
+        `• Ebanistería Interior: ${bespokeState.wood}\n` +
+        `• Tapicería Náutica: ${bespokeState.leather}\n\n` +
+        `Hola Eduardo Damiani, me gustaría coordinar una audiencia y cotizar la construcción personalizada de una unidad bajo estas especificaciones.`
+      );
+      window.open(`https://wa.me/5491147446468?text=${text}`, '_blank');
+    }
+
+    // Concierge Form Handler
+    function handleConciergeSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('form-name').value;
+      const phone = document.getElementById('form-phone').value;
+      const model = document.getElementById('form-model').value;
+      const notes = document.getElementById('form-notes').value || 'Sin notas adicionales';
+
+      const text = encodeURIComponent(
+        `*SOLICITUD DE AUDIENCIA VIP Y DOSSIER*\n\n` +
+        `• Armador: ${name}\n` +
+        `• Contacto / WhatsApp: ${phone}\n` +
+        `• Modelo de Interés: *${model}*\n` +
+        `• Observaciones / Amarre: ${notes}\n\n` +
+        `Solicito la remisión del dossier técnico formal y confirmación de agenda para visita en astillero San Fernando.`
+      );
+
+      window.open(`https://wa.me/5491147446468?text=${text}`, '_blank');
+    }
+  </script>
+</body>
+</html>
