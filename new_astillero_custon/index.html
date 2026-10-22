@@ -97,6 +97,13 @@
       overflow: hidden !important;
     }
 
+    /* Slide On Scroll: freeze touch momentum while a page transition runs */
+    @media (pointer: coarse) {
+      html.is-sliding {
+        overflow: hidden;
+      }
+    }
+
     a {
       color: inherit;
       text-decoration: none;
@@ -135,6 +142,7 @@
       transition: all var(--transition-smooth);
       white-space: nowrap;
       min-height: 48px;
+      max-width: 100%;
     }
 
     .btn-bugatti:hover, .btn-bugatti:focus-visible {
@@ -160,6 +168,14 @@
       padding: 0.55rem 1.4rem;
       font-size: 0.65rem;
       min-height: 38px;
+    }
+
+    @media (max-width: 639px) {
+      .btn-bugatti {
+        white-space: normal;
+        text-align: center;
+        line-height: 1.4;
+      }
     }
 
     /* ----------------------------------------------------
@@ -239,25 +255,13 @@
       transform: translateX(-50%);
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      text-align: center;
     }
 
-    .brand-logo-crest {
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-      filter: brightness(1.2);
-    }
-
-    .brand-wordmark {
-      font-family: var(--font-display);
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: var(--tracking-monumental);
-      text-transform: uppercase;
-      color: #FFFFFF;
-      white-space: nowrap;
+    /* Chrome logo; the soft shadow keeps it legible over bright photos */
+    .brand-logo {
+      height: 38px;
+      width: auto;
+      filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.45));
     }
 
     .nav-right {
@@ -280,6 +284,21 @@
     }
     .nav-quick-link:hover {
       color: #FFFFFF;
+    }
+
+    @media (max-width: 559px) {
+      .nav-inner {
+        padding: 0 1.25rem;
+      }
+      .menu-trigger > span {
+        display: none;
+      }
+      .brand-logo {
+        height: 30px;
+      }
+      .nav-right .btn-bugatti {
+        display: none;
+      }
     }
 
     /* Full-Screen Bugatti Drawer Menu */
@@ -305,6 +324,7 @@
     }
 
     .menu-overlay-header {
+      flex: none;
       height: var(--nav-h);
       padding: 0 2rem;
       max-width: var(--max-w-content);
@@ -336,14 +356,37 @@
       color: #000000;
     }
 
+    .menu-brand {
+      height: 30px;
+      width: auto;
+    }
+    @media (max-width: 559px) {
+      .menu-overlay-header {
+        padding: 0 1.25rem;
+        gap: 1rem;
+      }
+      .menu-brand {
+        height: 26px;
+      }
+      .btn-close-menu {
+        flex: none;
+        padding: 0.4rem 0.9rem;
+        letter-spacing: 0.12em;
+      }
+      .menu-overlay-content {
+        padding: 2.5rem 1.25rem;
+        gap: 2.5rem;
+      }
+    }
+
     .menu-overlay-content {
-      flex: 1;
+      flex: 1 0 auto;
       max-width: var(--max-w-content);
       width: 100%;
       margin: 0 auto;
       padding: 4rem 2rem;
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 4rem;
     }
     @media (min-width: 1024px) {
@@ -352,43 +395,60 @@
       }
     }
 
+    /* One line per entry, hairline separators, arrow on hover */
     .menu-nav-links {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      border-top: 1px solid var(--hairline);
     }
 
     .menu-nav-item {
       display: flex;
-      align-items: baseline;
-      gap: 1.5rem;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.15rem 0;
+      border-bottom: 1px solid var(--hairline);
       font-family: var(--font-display);
-      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
-      letter-spacing: var(--tracking-wide);
+      font-size: clamp(1rem, 1.8vw, 1.6rem);
+      line-height: 1.25;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: var(--text-muted);
-      transition: all var(--transition-smooth);
+      color: #D1D1D6;
+      transition: color var(--transition-smooth), padding-left var(--transition-smooth);
     }
     .menu-nav-item span.menu-num {
+      flex: none;
+      min-width: 1.75rem;
       font-family: var(--font-mono);
-      font-size: 0.85rem;
-      letter-spacing: var(--tracking-monumental);
-      color: var(--text-subtle);
-    }
-    .menu-nav-item:hover {
-      color: #FFFFFF;
-      transform: translateX(10px);
-    }
-    .menu-nav-item:hover span.menu-num {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
       color: var(--accent-champagne);
     }
-
-    .menu-models-grid {
-      border-left: 1px solid var(--hairline);
-      padding-left: 0;
+    .menu-nav-item::after {
+      content: '→';
+      margin-left: auto;
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      color: var(--accent-champagne);
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity var(--transition-smooth), transform var(--transition-smooth);
     }
+    .menu-nav-item:hover,
+    .menu-nav-item:focus-visible {
+      color: #FFFFFF;
+      padding-left: 0.5rem;
+      outline: none;
+    }
+    .menu-nav-item:hover::after,
+    .menu-nav-item:focus-visible::after {
+      opacity: 1;
+      transform: none;
+    }
+
     @media (min-width: 1024px) {
       .menu-models-grid {
+        border-left: 1px solid var(--hairline);
         padding-left: 3rem;
       }
     }
@@ -396,45 +456,243 @@
     .menu-sub-title {
       font-family: var(--font-mono);
       font-size: 0.75rem;
-      letter-spacing: var(--tracking-monumental);
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: var(--accent-champagne);
       margin-bottom: 1.5rem;
     }
 
+    /* Vessel shortcuts as a ruled list: name left, type and length right */
     .menu-vessels-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 1rem;
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--hairline);
     }
 
     .menu-vessel-pill {
-      background: var(--bg-surface);
-      border: 1px solid var(--hairline);
-      padding: 1rem;
-      transition: all var(--transition-smooth);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.25rem 1rem;
+      width: 100%;
+      padding: 0.95rem 0.25rem;
+      text-align: left;
+      font: inherit;
+      color: inherit;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--hairline);
       cursor: pointer;
+      transition: background var(--transition-smooth), padding-left var(--transition-smooth);
     }
-    .menu-vessel-pill:hover {
-      border-color: #FFFFFF;
-      background: var(--bg-surface-elevated);
+    .menu-vessel-pill:hover,
+    .menu-vessel-pill:focus-visible {
+      background: var(--bg-surface);
+      padding-left: 0.75rem;
+      outline: none;
     }
     .menu-vessel-name {
       font-family: var(--font-display);
-      font-size: 0.8rem;
-      letter-spacing: var(--tracking-wide);
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: #FFFFFF;
-      margin-bottom: 0.25rem;
+      transition: color var(--transition-smooth);
+    }
+    .menu-vessel-pill:hover .menu-vessel-name,
+    .menu-vessel-pill:focus-visible .menu-vessel-name {
+      color: var(--accent-champagne);
     }
     .menu-vessel-meta {
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      color: var(--text-muted);
+      font-family: var(--font-body);
+      font-size: 0.8rem;
+      color: #A1A1A6;
     }
 
     /* ----------------------------------------------------
-       HERO CINEMATICS (100vh Full-Bleed Flagship)
+       PAGE RAIL (Custom Scrollbar for Slide Navigation)
+    ---------------------------------------------------- */
+    html, body {
+      scrollbar-width: none;
+    }
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+      display: none;
+    }
+
+    #page-rail {
+      position: fixed;
+      top: 50%;
+      right: 1.25rem;
+      transform: translateY(-50%);
+      z-index: 950;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.4rem;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid var(--hairline);
+      border-radius: 9999px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .rail-arrow {
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: 1px solid var(--hairline-bright);
+      border-radius: 9999px;
+      color: #FFFFFF;
+      cursor: pointer;
+      transition: all var(--transition-smooth);
+    }
+    .rail-arrow:hover, .rail-arrow:focus-visible {
+      background: #FFFFFF;
+      color: #000000;
+      border-color: #FFFFFF;
+      outline: none;
+    }
+    .rail-arrow:disabled {
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .rail-count {
+      font-family: var(--font-mono);
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      user-select: none;
+    }
+    .rail-count-current {
+      color: var(--accent-champagne);
+    }
+
+    .rail-track {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      touch-action: none;
+    }
+
+    .rail-seg {
+      position: relative;
+      width: 24px;
+      height: 26px;
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: height var(--transition-smooth);
+    }
+    .rail-seg.is-active {
+      height: 56px;
+    }
+    .rail-seg:focus-visible {
+      outline: 1px solid var(--hairline-focus);
+      outline-offset: 2px;
+    }
+
+    .rail-line {
+      position: relative;
+      width: 2px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      overflow: hidden;
+      transition: background var(--transition-smooth);
+    }
+    .rail-seg:hover .rail-line,
+    .rail-seg.is-preview .rail-line {
+      background: #FFFFFF;
+    }
+    .rail-seg.is-active .rail-line {
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    /* Thumb: sized and positioned like a scrollbar thumb within the active page */
+    .rail-fill {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      top: calc(var(--thumb-pos, 0) * 100%);
+      height: 0;
+      background: var(--accent-champagne);
+    }
+    .rail-seg.is-active .rail-fill {
+      height: calc(var(--thumb-size, 1) * 100%);
+    }
+
+    .rail-label {
+      position: absolute;
+      top: 50%;
+      right: calc(100% + 0.5rem);
+      transform: translate(6px, -50%);
+      white-space: nowrap;
+      padding: 0.3rem 0.7rem;
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid var(--hairline);
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      font-size: 0.58rem;
+      letter-spacing: var(--tracking-wide);
+      text-transform: uppercase;
+      color: var(--text-muted);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition-smooth), transform var(--transition-smooth), color var(--transition-smooth);
+    }
+    @media (hover: hover) {
+      #page-rail:hover .rail-label {
+        opacity: 1;
+        transform: translate(0, -50%);
+      }
+    }
+    .rail-track.is-dragging .rail-label {
+      opacity: 1;
+      transform: translate(0, -50%);
+    }
+    .rail-seg.is-active .rail-label {
+      color: var(--accent-champagne);
+    }
+    .rail-seg:hover .rail-label,
+    .rail-seg:focus-visible .rail-label,
+    .rail-seg.is-preview .rail-label {
+      opacity: 1;
+      color: #FFFFFF;
+      transform: translate(0, -50%);
+    }
+
+    @media (max-width: 767px) {
+      #page-rail {
+        right: 0.35rem;
+        padding: 0.4rem 0.1rem;
+      }
+      .rail-seg {
+        width: 16px;
+        height: 18px;
+      }
+      .rail-seg.is-active {
+        height: 38px;
+      }
+    }
+    @media (max-width: 767px), (max-height: 640px) {
+      .rail-arrow, .rail-count {
+        display: none;
+      }
+    }
+
+    /* ----------------------------------------------------
+       HERO CAROUSEL (Featured vessels, full-bleed slides)
     ---------------------------------------------------- */
     .hero-cinematic {
       position: relative;
@@ -442,9 +700,48 @@
       height: 100vh;
       min-height: 650px;
       overflow: hidden;
+      background: var(--bg-black);
+      --carousel-interval: 8s;
+    }
+
+    .hero-slides {
+      position: absolute;
+      inset: 0;
+    }
+
+    /* Outgoing slide stays opaque underneath while the incoming one fades in over it */
+    .hero-slide {
+      position: absolute;
+      inset: 0;
       display: flex;
       align-items: flex-end;
-      padding-bottom: clamp(3rem, 7vh, 6rem);
+      padding-bottom: calc(clamp(3rem, 7vh, 6rem) + 3.5rem);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0s linear 1.1s, visibility 0s linear 1.1s;
+      --hero-focus: 50% 50%;
+      --hero-focus-mobile: 50% 50%;
+    }
+    .hero-slide.is-active {
+      z-index: 1;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 1.1s ease;
+    }
+
+    .hero-slide .hero-content > * {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .hero-slide.is-active .hero-content > * {
+      opacity: 1;
+      transform: none;
+      transition: opacity 0.9s ease 0.35s, transform 0.9s var(--ease-bugatti) 0.35s;
+    }
+    .hero-slide.is-active .hero-content > .telemetry-strip,
+    .hero-slide.is-active .hero-content > .hero-actions-row {
+      transition-delay: 0.5s;
     }
 
     .hero-media-backdrop {
@@ -456,31 +753,39 @@
       z-index: 1;
     }
 
+    .hero-media-backdrop picture {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
     .hero-media-backdrop img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
-      transform: scale(1.02);
-      transition: transform 8s var(--ease-bugatti);
+      /* Per-slide framing: the vessel in the upper two thirds, water below for the copy */
+      object-position: var(--hero-focus);
+      transform: scale(1);
+      transition: transform 0s linear 1.1s;
     }
-    .hero-cinematic:hover .hero-media-backdrop img {
-      transform: scale(1.05);
+    /* Slow push-in while the slide is on screen */
+    .hero-slide.is-active .hero-media-backdrop img {
+      transform: scale(1.06);
+      transition: transform 9s linear;
     }
 
+    /* Light veil only where it is needed: a short top fade for the navbar and a
+       bottom-left scrim under the copy. The vessel itself stays at full brightness. */
     .hero-vignette {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(
-        180deg,
-        rgba(0, 0, 0, 0.45) 0%,
-        rgba(0, 0, 0, 0.15) 30%,
-        rgba(0, 0, 0, 0.35) 60%,
-        rgba(0, 0, 0, 0.95) 100%
-      );
+      background:
+        linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 16%),
+        radial-gradient(140% 90% at 0% 100%, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 60%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0) 36%, rgba(0, 0, 0, 0.45) 52%, rgba(0, 0, 0, 0.8) 72%, #000000 100%);
       z-index: 2;
     }
 
@@ -503,6 +808,7 @@
       display: flex;
       align-items: center;
       gap: 0.75rem;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
     }
     .hero-pre-title::before {
       content: '';
@@ -514,25 +820,26 @@
 
     .hero-title-monumental {
       font-family: var(--font-display);
-      font-size: clamp(2.8rem, 7.5vw, 6.5rem);
+      font-size: clamp(2.4rem, 5.6vw, 5.4rem);
       font-weight: 900;
-      line-height: 0.98;
-      letter-spacing: var(--tracking-monumental);
+      line-height: 1;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: #FFFFFF;
       margin-bottom: 1.25rem;
-      text-shadow: 0 4px 30px rgba(0,0,0,0.8);
+      text-shadow: 0 2px 24px rgba(0, 0, 0, 0.55);
     }
 
     .hero-tagline {
       font-family: var(--font-body);
-      font-size: clamp(0.95rem, 1.4vw, 1.25rem);
-      font-weight: 300;
-      letter-spacing: var(--tracking-subtle);
-      color: #E0E0E0;
-      max-width: 650px;
-      margin-bottom: 2rem;
-      line-height: 1.5;
+      font-size: clamp(1rem, 1.3vw, 1.2rem);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      color: #F2F2F2;
+      max-width: 560px;
+      margin-bottom: 1.75rem;
+      line-height: 1.55;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
     }
 
     /* Bugatti Telemetry Strip */
@@ -584,172 +891,332 @@
       gap: 1.25rem;
     }
 
-    /* Scroll Indicator */
-    .scroll-indicator-wrap {
-      position: absolute;
-      right: 2rem;
-      bottom: 2.5rem;
-      z-index: 3;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    @media (min-width: 1024px) {
-      .scroll-indicator-wrap { display: flex; }
+    /* Desktop: specs move to the right of the copy so the text band stays low and short */
+    @media (min-width: 960px) {
+      .hero-content {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        column-gap: 3rem;
+        align-items: end;
+      }
+      .hero-pre-title,
+      .hero-title-monumental {
+        grid-column: 1 / -1;
+      }
+      .hero-tagline,
+      .hero-actions-row {
+        grid-column: 1;
+      }
+      .hero-content .telemetry-strip {
+        grid-column: 2;
+        grid-row: 3 / span 2;
+        grid-template-columns: repeat(2, minmax(150px, 1fr));
+        margin-bottom: 0;
+        align-self: end;
+      }
     }
 
-    .scroll-label {
+    /* Mobile: photo on top fading into black, copy below it on solid ground */
+    @media (max-width: 767px) {
+      .hero-media-backdrop {
+        height: 54%;
+        -webkit-mask-image: linear-gradient(180deg, #000000 55%, transparent 100%);
+        mask-image: linear-gradient(180deg, #000000 55%, transparent 100%);
+      }
+      .hero-media-backdrop img {
+        object-position: var(--hero-focus-mobile);
+      }
+      .hero-vignette {
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0) 18%);
+      }
+      .hero-content .telemetry-strip {
+        display: none;
+      }
+    }
+
+    /* Carousel navigation: one tab per vessel, the active tab's line fills over the interval */
+    .hero-carousel-nav {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: clamp(1.25rem, 3vh, 2rem);
+      z-index: 5;
+      max-width: var(--max-w-content);
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .carousel-tabs {
+      flex: 1;
+      max-width: 880px;
+      display: flex;
+      gap: 1.25rem;
+    }
+
+    .carousel-tab {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      padding: 0.5rem 0;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-align: left;
       font-family: var(--font-mono);
-      font-size: 0.6rem;
-      letter-spacing: var(--tracking-monumental);
+      font-size: 0.64rem;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--text-muted);
-      writing-mode: vertical-lr;
+      transition: color var(--transition-smooth);
+    }
+    .carousel-tab:hover,
+    .carousel-tab.is-active {
+      color: #FFFFFF;
+    }
+    .carousel-tab:focus-visible {
+      outline: 1px solid var(--hairline-focus);
+      outline-offset: 4px;
     }
 
-    .scroll-line {
-      width: 1px;
-      height: 48px;
-      background: var(--hairline);
+    .carousel-tab-label {
+      display: flex;
+      gap: 0.6rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .carousel-tab-num {
+      color: var(--accent-champagne);
+    }
+
+    .carousel-tab-track {
       position: relative;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.22);
       overflow: hidden;
     }
-    .scroll-line::after {
-      content: '';
+    .carousel-tab-fill {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 50%;
-      background: #FFFFFF;
-      animation: scrollPulse 2.4s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+      inset: 0;
+      background: var(--accent-champagne);
+      transform-origin: left center;
+      transform: scaleX(0);
     }
-    @keyframes scrollPulse {
-      0% { transform: translateY(-100%); }
-      100% { transform: translateY(200%); }
+    .carousel-tab.is-active .carousel-tab-fill {
+      animation: carouselProgress var(--carousel-interval) linear forwards;
+    }
+    .hero-cinematic.is-paused .carousel-tab.is-active .carousel-tab-fill {
+      animation-play-state: paused;
+    }
+    @keyframes carouselProgress {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+
+    .carousel-controls {
+      flex: none;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .carousel-arrow {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--hairline-bright);
+      border-radius: 9999px;
+      color: #FFFFFF;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: all var(--transition-smooth);
+    }
+    .carousel-arrow:hover,
+    .carousel-arrow:focus-visible {
+      background: #FFFFFF;
+      color: #000000;
+      border-color: #FFFFFF;
+      outline: none;
+    }
+
+    .carousel-toggle .icon-play,
+    .hero-cinematic.is-user-paused .carousel-toggle .icon-pause {
+      display: none;
+    }
+    .hero-cinematic.is-user-paused .carousel-toggle .icon-play {
+      display: block;
+    }
+
+    @media (max-width: 767px) {
+      .hero-slide {
+        padding-bottom: 5.25rem;
+      }
+      .hero-carousel-nav {
+        bottom: 1.25rem;
+        padding: 0 1.5rem;
+        gap: 1rem;
+        align-items: center;
+      }
+      .carousel-tabs {
+        gap: 0.6rem;
+      }
+      .carousel-tab-name,
+      .carousel-arrow[data-dir] {
+        display: none;
+      }
+      .carousel-arrow {
+        width: 36px;
+        height: 36px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-slide,
+      .hero-slide.is-active,
+      .hero-slide .hero-media-backdrop img,
+      .hero-slide .hero-content > * {
+        transition: none !important;
+        transform: none !important;
+      }
     }
 
     /* ----------------------------------------------------
-       BUGATTI FULL-BLEED SHOWCASE SLIDES (Tourbillon Style)
+       INVITATION (Full-bleed fleet photo, editorial copy on the left)
     ---------------------------------------------------- */
-    .bugatti-showcase-section {
+    .section-invite {
       position: relative;
-      width: 100%;
-      min-height: 85vh;
-      overflow: hidden;
+      min-height: 100vh;
+      min-height: 100svh;
       display: flex;
       align-items: center;
-      border-top: 1px solid var(--hairline);
+      overflow: hidden;
       background: var(--bg-black);
+      border-top: 1px solid var(--hairline);
     }
 
-    .showcase-bg-media {
+    .invite-media {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      inset: 0;
       z-index: 1;
     }
-
-    .showcase-bg-media img {
+    .invite-media picture {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .invite-media img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center;
-      filter: brightness(0.85);
-      transition: transform 1.2s var(--ease-bugatti), filter 0.8s ease;
-    }
-    .bugatti-showcase-section:hover .showcase-bg-media img {
-      transform: scale(1.02);
-      filter: brightness(0.92);
+      object-position: 30% 50%;
     }
 
-    .showcase-vignette-left {
+    /* Veil only behind the copy on the left; the fleet on the right stays bright */
+    .invite-scrim {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        rgba(0,0,0,0.92) 0%,
-        rgba(0,0,0,0.7) 40%,
-        rgba(0,0,0,0.2) 75%,
-        rgba(0,0,0,0.5) 100%
-      );
+      inset: 0;
       z-index: 2;
+      background:
+        linear-gradient(90deg, rgba(0, 0, 0, 0.66) 0%, rgba(0, 0, 0, 0.42) 34%, rgba(0, 0, 0, 0) 62%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 16%, rgba(0, 0, 0, 0) 82%, rgba(0, 0, 0, 0.45) 100%);
     }
 
-    .showcase-content-box {
+    .invite-content {
       position: relative;
       z-index: 3;
-      max-width: var(--max-w-content);
       width: 100%;
+      max-width: var(--max-w-content);
       margin: 0 auto;
-      padding: 5rem 2rem;
+      padding: 6rem 2rem;
     }
 
-    .showcase-eyebrow {
+    .invite-eyebrow {
       font-family: var(--font-mono);
       font-size: 0.72rem;
-      letter-spacing: var(--tracking-monumental);
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: var(--accent-champagne);
-      margin-bottom: 0.5rem;
+      color: #FFFFFF;
+      margin-bottom: 1.25rem;
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5);
     }
 
-    .showcase-vessel-title {
+    .invite-title {
+      max-width: 620px;
       font-family: var(--font-display);
-      font-size: clamp(2.4rem, 5.5vw, 4.8rem);
+      font-size: clamp(1.6rem, 2.6vw, 2.5rem);
       font-weight: 900;
-      line-height: 1.05;
-      letter-spacing: var(--tracking-monumental);
+      line-height: 1.2;
+      letter-spacing: 0.04em;
       text-transform: uppercase;
       color: #FFFFFF;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.4);
     }
 
-    .showcase-narrative {
+    .invite-text {
+      max-width: 460px;
       font-family: var(--font-body);
-      font-size: 1.05rem;
-      font-weight: 300;
+      font-size: clamp(1rem, 1.2vw, 1.12rem);
       line-height: 1.6;
-      color: #D1D1D6;
-      max-width: 580px;
-      margin-bottom: 2rem;
-    }
-
-    .showcase-specs-cluster {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
+      color: #F2F2F2;
       margin-bottom: 2.5rem;
-      border-top: 1px solid var(--hairline);
-      padding-top: 1.5rem;
-      max-width: 580px;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.55);
     }
 
-    .showcase-spec-unit {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-    }
-
-    .showcase-spec-k {
+    /* Text link with underline and arrow, as in the reference */
+    .invite-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 2.5rem;
+      padding-bottom: 0.9rem;
+      border-bottom: 1px solid #FFFFFF;
       font-family: var(--font-mono);
-      font-size: 0.62rem;
-      letter-spacing: var(--tracking-wide);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: #FFFFFF;
+      transition: color var(--transition-smooth), border-color var(--transition-smooth);
+    }
+    .invite-link-arrow {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      transition: transform var(--transition-smooth);
+    }
+    .invite-link:hover,
+    .invite-link:focus-visible {
+      color: var(--accent-champagne);
+      border-color: var(--accent-champagne);
+      outline: none;
+    }
+    .invite-link:hover .invite-link-arrow,
+    .invite-link:focus-visible .invite-link-arrow {
+      transform: translateX(6px);
     }
 
-    .showcase-spec-v {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: #FFFFFF;
+    /* Phones: the lead boat fills the frame, copy sits on the water at the bottom */
+    @media (max-width: 767px) {
+      .section-invite {
+        align-items: flex-end;
+      }
+      .invite-media img {
+        object-position: 80% 50%;
+      }
+      .invite-scrim {
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 18%, rgba(0, 0, 0, 0) 38%, rgba(0, 0, 0, 0.75) 68%, #000000 100%);
+      }
+      .invite-content {
+        padding: 6rem 2rem 3.5rem 1.5rem;
+      }
     }
 
     /* ----------------------------------------------------
@@ -791,12 +1258,13 @@
 
     .section-main-heading {
       font-family: var(--font-display);
-      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-size: clamp(1.5rem, 0.4rem + 2vw, 2.3rem);
       font-weight: 900;
-      letter-spacing: var(--tracking-monumental);
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: #FFFFFF;
-      line-height: 1.1;
+      line-height: 1.15;
+      overflow-wrap: break-word;
     }
 
     .section-sub-desc {
@@ -844,12 +1312,12 @@
     /* Widescreen Cinema Vessel Cards */
     .fleet-widescreen-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 2.5rem;
     }
     @media (min-width: 840px) {
       .fleet-widescreen-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -947,7 +1415,7 @@
 
     .vessel-card-specs-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 1px;
       background: var(--hairline);
       border: 1px solid var(--hairline);
@@ -1000,14 +1468,14 @@
 
     .sur-mesure-hero-block {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 3.5rem;
       margin-bottom: 5rem;
       align-items: center;
     }
     @media (min-width: 1024px) {
       .sur-mesure-hero-block {
-        grid-template-columns: 1fr 1.2fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
       }
     }
 
@@ -1065,18 +1533,17 @@
     /* 4 Pillars of Bespoke Craftsmanship */
     .sur-mesure-pillars {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 1.5rem;
-      margin-bottom: 5rem;
     }
     @media (min-width: 640px) {
       .sur-mesure-pillars {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       .sur-mesure-pillars {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
       }
     }
 
@@ -1093,7 +1560,7 @@
     .pillar-num {
       font-family: var(--font-mono);
       font-size: 0.8rem;
-      letter-spacing: var(--tracking-monumental);
+      letter-spacing: var(--tracking-wide);
       color: var(--accent-champagne);
       margin-bottom: 1rem;
     }
@@ -1101,7 +1568,8 @@
     .pillar-title {
       font-family: var(--font-display);
       font-size: 1rem;
-      letter-spacing: var(--tracking-wide);
+      line-height: 1.35;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: #FFFFFF;
       margin-bottom: 0.75rem;
@@ -1113,128 +1581,6 @@
       line-height: 1.6;
     }
 
-    /* Interactive Bespoke Visualizer (Sur Mesure Configurator) */
-    .bespoke-configurator-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--hairline);
-      padding: clamp(2rem, 4vw, 3.5rem);
-      position: relative;
-    }
-
-    .configurator-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 3rem;
-    }
-    @media (min-width: 1024px) {
-      .configurator-grid {
-        grid-template-columns: 1.1fr 1fr;
-      }
-    }
-
-    .configurator-preview-pane {
-      background: #020202;
-      border: 1px solid var(--hairline);
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 380px;
-      position: relative;
-    }
-
-    .hull-preview-canvas {
-      width: 100%;
-      max-width: 440px;
-      height: 220px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .hull-svg-shape {
-      width: 100%;
-      height: 100%;
-      transition: fill 0.5s ease, filter 0.5s ease;
-    }
-
-    .preview-telemetry-badge {
-      position: absolute;
-      top: 1.25rem;
-      left: 1.25rem;
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: var(--tracking-wide);
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    .preview-code-badge {
-      position: absolute;
-      bottom: 1.25rem;
-      right: 1.25rem;
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
-      color: var(--accent-champagne);
-    }
-
-    .configurator-options-pane {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    .config-group-title {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      letter-spacing: var(--tracking-monumental);
-      text-transform: uppercase;
-      color: #FFFFFF;
-      margin-bottom: 0.85rem;
-    }
-
-    .swatches-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-
-    .swatch-btn {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.5rem 1rem;
-      background: var(--bg-surface-elevated);
-      border: 1px solid var(--hairline);
-      border-radius: 9999px;
-      color: var(--text-muted);
-      cursor: pointer;
-      font-family: var(--font-mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.08em;
-      transition: all var(--transition-smooth);
-    }
-    .swatch-btn:hover {
-      border-color: #FFFFFF;
-      color: #FFFFFF;
-    }
-    .swatch-btn.selected {
-      border-color: #FFFFFF;
-      background: #FFFFFF;
-      color: #000000;
-      font-weight: 700;
-    }
-
-    .swatch-circle {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      border: 1px solid rgba(0,0,0,0.3);
-      display: inline-block;
-    }
-
     /* ----------------------------------------------------
        SAN FERNANDO SHIPYARD & HERITAGE (Bugatti Molsheim Style)
     ---------------------------------------------------- */
@@ -1242,9 +1588,15 @@
       padding: 8rem 0;
       background: var(--bg-void);
       border-top: 1px solid var(--hairline);
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .yard-container {
+      width: 100%;
       max-width: var(--max-w-content);
       margin: 0 auto;
       padding: 0 2rem;
@@ -1252,13 +1604,13 @@
 
     .yard-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 4rem;
       align-items: center;
     }
-    @media (min-width: 1024px) {
+    @media (min-width: 1200px) {
       .yard-grid {
-        grid-template-columns: 1.1fr 1fr;
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
       }
     }
 
@@ -1278,6 +1630,8 @@
       position: absolute;
       bottom: 2rem;
       left: 2rem;
+      right: 2rem;
+      max-width: max-content;
       background: rgba(0, 0, 0, 0.88);
       border: 1px solid var(--hairline);
       padding: 1.25rem 1.75rem;
@@ -1297,6 +1651,21 @@
       text-transform: uppercase;
       color: #FFFFFF;
     }
+    @media (max-width: 639px) {
+      .yard-media-spread {
+        height: 360px;
+      }
+      .yard-badge-overlay {
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+        padding: 1rem 1.25rem;
+      }
+      .yard-badge-text {
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+      }
+    }
 
     .yard-info-narrative {
       display: flex;
@@ -1304,31 +1673,71 @@
       gap: 1.5rem;
     }
 
+    /* Key figures: three columns split by hairlines, figures sized to their column */
     .yard-stats-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       border-top: 1px solid var(--hairline);
       border-bottom: 1px solid var(--hairline);
-      padding: 2rem 0;
       margin: 1rem 0;
+    }
+
+    .yard-stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      padding: 1.75rem 1.5rem;
+    }
+    .yard-stat-item:first-child {
+      padding-left: 0;
+    }
+    .yard-stat-item:last-child {
+      padding-right: 0;
+    }
+    .yard-stat-item + .yard-stat-item {
+      border-left: 1px solid var(--hairline);
     }
 
     .yard-stat-item span.num {
       display: block;
       font-family: var(--font-display);
-      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-size: clamp(1.4rem, 2vw, 2rem);
       font-weight: 900;
-      letter-spacing: var(--tracking-wide);
+      line-height: 1;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
       color: #FFFFFF;
     }
     .yard-stat-item span.txt {
+      display: block;
       font-family: var(--font-mono);
-      font-size: 0.65rem;
-      letter-spacing: var(--tracking-wide);
+      font-size: 0.68rem;
+      line-height: 1.5;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--text-muted);
-      margin-top: 0.25rem;
+    }
+
+    /* Phones: one figure per row, label beside it */
+    @media (max-width: 639px) {
+      .yard-stats-row {
+        grid-template-columns: 1fr;
+      }
+      .yard-stat-item,
+      .yard-stat-item:first-child,
+      .yard-stat-item:last-child {
+        flex-direction: row;
+        align-items: center;
+        gap: 1.25rem;
+        padding: 1.25rem 0;
+      }
+      .yard-stat-item + .yard-stat-item {
+        border-left: none;
+        border-top: 1px solid var(--hairline);
+      }
+      .yard-stat-item span.num {
+        min-width: 7.5rem;
+      }
     }
 
     /* ----------------------------------------------------
@@ -1338,9 +1747,15 @@
       padding: 8rem 0;
       background: var(--bg-black);
       border-top: 1px solid var(--hairline);
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .concierge-wrap {
+      width: 100%;
       max-width: var(--max-w-content);
       margin: 0 auto;
       padding: 0 2rem;
@@ -1351,12 +1766,21 @@
       border: 1px solid var(--hairline);
       padding: clamp(2.5rem, 5vw, 5rem);
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: 4rem;
     }
     @media (min-width: 1024px) {
       .concierge-card-box {
-        grid-template-columns: 1fr 1.2fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+      }
+    }
+    @media (max-width: 639px) {
+      .concierge-card-box {
+        padding: 2rem 1.25rem;
+        gap: 2.5rem;
+      }
+      .officer-card {
+        padding: 1.25rem;
       }
     }
 
@@ -1608,15 +2032,11 @@
       padding-bottom: 4rem;
     }
 
-    .footer-giant-wordmark {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 8vw, 6.8rem);
-      font-weight: 900;
-      letter-spacing: var(--tracking-monumental);
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.08);
+    .footer-logo {
+      width: min(440px, 75%);
+      height: auto;
+      margin: 0 auto;
       user-select: none;
-      line-height: 1;
     }
 
     .footer-columns-grid {
@@ -1691,6 +2111,20 @@
       border-color: #FFFFFF;
       color: #FFFFFF;
     }
+
+    /* Keep page content clear of the fixed page rail on the right edge */
+    @media (min-width: 768px) {
+      .hero-content,
+      .hero-carousel-nav,
+      .invite-content,
+      .fleet-container,
+      .sur-mesure-wrap,
+      .yard-container,
+      .concierge-wrap,
+      .footer-wrap {
+        padding-right: max(2rem, calc(5.5rem - max(0px, (100vw - var(--max-w-content)) / 2)));
+      }
+    }
   </style>
 </head>
 <body>
@@ -1708,10 +2142,9 @@
         </button>
       </div>
 
-      <div class="nav-brand">
-        <img src="assets/logo.png" alt="Astillero Custon Crest" class="brand-logo-crest">
-        <a href="#hero" class="brand-wordmark">ASTILLERO CUSTON</a>
-      </div>
+      <a href="#hero" class="nav-brand" aria-label="Astillero Custon, volver al inicio">
+        <img src="assets/logo-astillero-custon.png" alt="Astillero Custon" class="brand-logo" width="944" height="218">
+      </a>
 
       <div class="nav-right">
         <a href="#showroom" class="nav-quick-link">MODELOS</a>
@@ -1724,7 +2157,7 @@
   <!-- 2. FULLSCREEN BUGATTI MENU DRAWER -->
   <div id="menu-overlay" aria-hidden="true">
     <div class="menu-overlay-header">
-      <div class="brand-wordmark" style="font-size: 0.75rem;">ASTILLERO CUSTON S.A.</div>
+      <img src="assets/logo-astillero-custon.png" alt="Astillero Custon" class="menu-brand" width="944" height="218">
       <button id="close-menu-btn" class="btn-close-menu" aria-label="Cerrar Menú">
         <span>✕</span> CERRAR
       </button>
@@ -1732,258 +2165,341 @@
     <div class="menu-overlay-content">
       <div class="menu-nav-links">
         <a href="#hero" class="menu-nav-item close-menu-link">
-          <span class="menu-num">01</span> NAVE INSIGNIA
-        </a>
-        <a href="#showcases" class="menu-nav-item close-menu-link">
-          <span class="menu-num">02</span> SHOWCASES CINEMA
+          <span class="menu-num">01</span> MODELOS DESTACADOS
         </a>
         <a href="#showroom" class="menu-nav-item close-menu-link">
-          <span class="menu-num">03</span> TODA LA FLOTA (10)
+          <span class="menu-num">02</span> TODA LA FLOTA (10)
         </a>
         <a href="#sur-mesure" class="menu-nav-item close-menu-link">
-          <span class="menu-num">04</span> ATELIER SUR MESURE
+          <span class="menu-num">03</span> ATELIER SUR MESURE
         </a>
         <a href="#varadero" class="menu-nav-item close-menu-link">
-          <span class="menu-num">05</span> EL ASTILLERO & LEGADO
+          <span class="menu-num">04</span> EL ASTILLERO & LEGADO
         </a>
         <a href="#concierge" class="menu-nav-item close-menu-link">
-          <span class="menu-num">06</span> VIP CONCIERGE
+          <span class="menu-num">05</span> VIP CONCIERGE
         </a>
       </div>
 
       <div class="menu-models-grid">
-        <div class="menu-sub-title">// CATALOGO COMPLETO DE EMBARCACIONES</div>
+        <div class="menu-sub-title">// EXPLORA NUESTROS NAVÍOS</div>
         <div class="menu-vessels-list">
-          <div class="menu-vessel-pill" onclick="openModelModal('preveza-62')">
-            <div class="menu-vessel-name">PREVEZA 62</div>
-            <div class="menu-vessel-meta">Flybridge // 20.60 m</div>
-          </div>
-          <div class="menu-vessel-pill" onclick="openModelModal('custon-45')">
-            <div class="menu-vessel-name">CUSTON 45</div>
-            <div class="menu-vessel-meta">Flybridge // 14.10 m</div>
-          </div>
-          <div class="menu-vessel-pill" onclick="openModelModal('custon-42')">
-            <div class="menu-vessel-name">CUSTON 42</div>
-            <div class="menu-vessel-meta">Hard Top Coupé // 12.85 m</div>
-          </div>
-          <div class="menu-vessel-pill" onclick="openModelModal('custon-40')">
-            <div class="menu-vessel-name">CUSTON 40</div>
-            <div class="menu-vessel-meta">Hard Top Coupé // 12.36 m</div>
-          </div>
-          <div class="menu-vessel-pill" onclick="openModelModal('custon-38')">
-            <div class="menu-vessel-name">CUSTON 38 FLY</div>
-            <div class="menu-vessel-meta">Flybridge // 12.64 m</div>
-          </div>
-          <div class="menu-vessel-pill" onclick="openModelModal('custon-especial')">
-            <div class="menu-vessel-name">CUSTON ESPECIAL</div>
-            <div class="menu-vessel-meta">Sport Cruiser // 9.50 m</div>
-          </div>
-          <div class="menu-vessel-pill" onclick="openModelModal('custon-cross')">
-            <div class="menu-vessel-name">CUSTON CROSS</div>
-            <div class="menu-vessel-meta">Sport Cruiser // 9.75 m</div>
-          </div>
-          <div class="menu-vessel-pill" onclick="openModelModal('preveza-300')">
-            <div class="menu-vessel-name">PREVEZA 300</div>
-            <div class="menu-vessel-meta">Sport Cruiser // 10.10 m</div>
-          </div>
-          <div class="menu-vessel-pill" onclick="openModelModal('custon-compac')">
-            <div class="menu-vessel-name">CUSTON COMPAC</div>
-            <div class="menu-vessel-meta">Hard Top Coupé // 10.05 m</div>
-          </div>
-          <div class="menu-vessel-pill" onclick="openModelModal('custon-35')">
-            <div class="menu-vessel-name">CUSTON 35 SPORT</div>
-            <div class="menu-vessel-meta">Day Cruiser // 10.50 m</div>
-          </div>
+          <button type="button" class="menu-vessel-pill" onclick="openModelModal('preveza-62')">
+            <span class="menu-vessel-name">PREVEZA 62</span>
+            <span class="menu-vessel-meta">Flybridge // 20.60 m</span>
+          </button>
+          <button type="button" class="menu-vessel-pill" onclick="openModelModal('custon-45')">
+            <span class="menu-vessel-name">CUSTON 45</span>
+            <span class="menu-vessel-meta">Flybridge // 14.10 m</span>
+          </button>
+          <button type="button" class="menu-vessel-pill" onclick="openModelModal('custon-42')">
+            <span class="menu-vessel-name">CUSTON 42</span>
+            <span class="menu-vessel-meta">Hard Top Coupé // 12.85 m</span>
+          </button>
+          <button type="button" class="menu-vessel-pill" onclick="openModelModal('custon-40')">
+            <span class="menu-vessel-name">CUSTON 40</span>
+            <span class="menu-vessel-meta">Hard Top Coupé // 12.36 m</span>
+          </button>
+          <button type="button" class="menu-vessel-pill" onclick="openModelModal('custon-38')">
+            <span class="menu-vessel-name">CUSTON 38 FLY</span>
+            <span class="menu-vessel-meta">Flybridge // 12.64 m</span>
+          </button>
+          <button type="button" class="menu-vessel-pill" onclick="openModelModal('custon-especial')">
+            <span class="menu-vessel-name">CUSTON ESPECIAL</span>
+            <span class="menu-vessel-meta">Sport Cruiser // 9.50 m</span>
+          </button>
+          <button type="button" class="menu-vessel-pill" onclick="openModelModal('custon-cross')">
+            <span class="menu-vessel-name">CUSTON CROSS</span>
+            <span class="menu-vessel-meta">Sport Cruiser // 9.75 m</span>
+          </button>
+          <button type="button" class="menu-vessel-pill" onclick="openModelModal('preveza-300')">
+            <span class="menu-vessel-name">PREVEZA 300</span>
+            <span class="menu-vessel-meta">Sport Cruiser // 10.10 m</span>
+          </button>
+          <button type="button" class="menu-vessel-pill" onclick="openModelModal('custon-compac')">
+            <span class="menu-vessel-name">CUSTON COMPAC</span>
+            <span class="menu-vessel-meta">Hard Top Coupé // 10.05 m</span>
+          </button>
+          <button type="button" class="menu-vessel-pill" onclick="openModelModal('custon-35')">
+            <span class="menu-vessel-name">CUSTON 35 SPORT</span>
+            <span class="menu-vessel-meta">Day Cruiser // 10.50 m</span>
+          </button>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- PAGE RAIL (CUSTOM SLIDE SCROLLBAR) -->
+  <nav id="page-rail" aria-label="Navegación entre páginas">
+    <button type="button" id="rail-prev" class="rail-arrow" aria-label="Página anterior">
+      <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2 8 L6 4 L10 8" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+    </button>
+    <span id="rail-current" class="rail-count rail-count-current">01</span>
+    <div id="rail-track" class="rail-track"></div>
+    <span id="rail-total" class="rail-count">01</span>
+    <button type="button" id="rail-next" class="rail-arrow" aria-label="Página siguiente">
+      <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2 4 L6 8 L10 4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+    </button>
+  </nav>
+
   <main>
-    <!-- 3. HERO SECTION (BUGATTI TOURBILLON PREMIERE STYLE) -->
-    <section id="hero" class="hero-cinematic" aria-label="Nave Insignia Preveza 62">
-      <div class="hero-media-backdrop">
-        <img src="hero.jpg" alt="Astillero Custon Flagship Preveza 62">
-      </div>
-      <div class="hero-vignette"></div>
+    <!-- 3. HERO CAROUSEL (FEATURED VESSELS) -->
+    <section id="hero" class="hero-cinematic" aria-roledescription="carrusel" aria-label="Modelos destacados" data-page-label="Destacados">
+      <div class="hero-slides" aria-live="off">
+        <!-- SLIDE 1: PREVEZA 62 -->
+        <div id="preveza-62" class="hero-slide is-active" role="group" aria-roledescription="diapositiva" aria-label="1 de 4: Preveza 62" style="--hero-focus: 50% 66%; --hero-focus-mobile: 55% 50%;">
+          <div class="hero-media-backdrop">
+            <picture>
+              <source type="image/webp"
+                      srcset="assets/hero/hero-1280.webp 1280w, assets/hero/hero-2048.webp 2048w, assets/hero/hero-3072.webp 3072w, assets/hero/hero-4096.webp 4096w"
+                      sizes="max(100vw, 100vh)">
+              <img src="hero.jpg" alt="Preveza 62 navegando a velocidad de crucero" fetchpriority="high">
+            </picture>
+          </div>
+          <div class="hero-vignette"></div>
 
-      <div class="hero-content">
-        <div class="hero-pre-title">PREMIERE NAVAL // SAN FERNANDO, ARGENTINA</div>
-        <h1 class="hero-title-monumental">PREVEZA 62</h1>
-        <p class="hero-tagline">
-          FORM FOLLOWS WATER. VEINTE METROS DE SUPREMACÍA HIDRODINÁMICA, CONFORT RESIDENCIAL Y PODERÍO OCEÁNICO EN EL RÍO DE LA PLATA.
-        </p>
+          <div class="hero-content">
+            <div class="hero-pre-title">PREMIERE NAVAL // SAN FERNANDO, ARGENTINA</div>
+            <h1 class="hero-title-monumental">PREVEZA 62</h1>
+            <p class="hero-tagline">
+              Form follows water. Veinte metros de supremacía hidrodinámica, confort residencial y poderío oceánico en el Río de la Plata.
+            </p>
 
-        <!-- Bugatti Telemetry Strip -->
-        <div class="telemetry-strip sharp-edge">
-          <div class="telemetry-box">
-            <span class="telemetry-label">Eslora Total</span>
-            <span class="telemetry-val">20.60 M</span>
-          </div>
-          <div class="telemetry-box">
-            <span class="telemetry-label">Potencia Máxima</span>
-            <span class="telemetry-val">2.300 HP</span>
-          </div>
-          <div class="telemetry-box">
-            <span class="telemetry-label">Combustible</span>
-            <span class="telemetry-val">4.000 L</span>
-          </div>
-          <div class="telemetry-box">
-            <span class="telemetry-label">Desplazamiento</span>
-            <span class="telemetry-val">28 TON</span>
+            <div class="telemetry-strip sharp-edge">
+              <div class="telemetry-box">
+                <span class="telemetry-label">Eslora Total</span>
+                <span class="telemetry-val">20.60 M</span>
+              </div>
+              <div class="telemetry-box">
+                <span class="telemetry-label">Potencia Máxima</span>
+                <span class="telemetry-val">2.300 HP</span>
+              </div>
+              <div class="telemetry-box">
+                <span class="telemetry-label">Combustible</span>
+                <span class="telemetry-val">4.000 L</span>
+              </div>
+              <div class="telemetry-box">
+                <span class="telemetry-label">Desplazamiento</span>
+                <span class="telemetry-val">28 TON</span>
+              </div>
+            </div>
+
+            <div class="hero-actions-row">
+              <button class="btn-bugatti btn-bugatti-primary" onclick="openModelModal('preveza-62')">
+                EXPLORAR PREVEZA 62
+              </button>
+              <a href="https://wa.me/5491147446468?text=*CONSULTA%20VIP%20-%20PREVEZA%2062*%0A%0AHola%20Eduardo%20Damiani%2C%20quisiera%20solicitar%20el%20dossier%20confidencial%20y%20cotizaci%C3%B3n%20formal%20de%20la%20nave%20insignia%20Preveza%2062." target="_blank" rel="noopener noreferrer" class="btn-bugatti">
+                SOLICITAR AUDIENCIA PRIVADA
+              </a>
+            </div>
           </div>
         </div>
+        <!-- SLIDE 2: CUSTON 45 -->
+        <div id="custon-45" class="hero-slide" role="group" aria-roledescription="diapositiva" aria-label="2 de 4: Custon 45" style="--hero-focus: 50% 52%; --hero-focus-mobile: 50% 50%;">
+          <div class="hero-media-backdrop">
+            <picture>
+              <source type="image/webp"
+                      srcset="assets/hero/custon-45-960.webp 960w, assets/hero/custon-45-1600.webp 1600w, assets/hero/custon-45-1844.webp 1844w"
+                      sizes="100vw">
+              <img src="cruceros/modelos/modelo_custon_cruiser_45.jpg" alt="Custon 45 navegando" fetchpriority="low">
+            </picture>
+          </div>
+          <div class="hero-vignette"></div>
 
-        <div class="hero-actions-row">
-          <button class="btn-bugatti btn-bugatti-primary" onclick="openModelModal('preveza-62')">
-            EXPLORAR PREVEZA 62
+          <div class="hero-content">
+            <div class="hero-pre-title">YATE FLYBRIDGE // LE GRAND CROISEUR</div>
+            <h2 class="hero-title-monumental">CUSTON 45</h2>
+            <p class="hero-tagline">
+              Estilo europeo, líneas contemporáneas y una inmensa superficie vidriada. Un barco para vivir a bordo.
+            </p>
+
+            <div class="telemetry-strip sharp-edge">
+              <div class="telemetry-box">
+                <span class="telemetry-label">Eslora</span>
+                <span class="telemetry-val">14.10 M</span>
+              </div>
+              <div class="telemetry-box">
+                <span class="telemetry-label">Manga</span>
+                <span class="telemetry-val">4.26 M</span>
+              </div>
+              <div class="telemetry-box">
+                <span class="telemetry-label">Potencia</span>
+                <span class="telemetry-val">900 HP</span>
+              </div>
+              <div class="telemetry-box">
+                <span class="telemetry-label">Camarotes</span>
+                <span class="telemetry-val">3 / 2 BAÑOS</span>
+              </div>
+            </div>
+
+            <div class="hero-actions-row">
+              <button class="btn-bugatti btn-bugatti-primary" onclick="openModelModal('custon-45')">
+                EXPLORAR CUSTON 45
+              </button>
+              <a href="https://wa.me/5491147446468?text=*CONSULTA%20VIP%20-%20CUSTON%2045*%0A%0AHola%20Eduardo%20Damiani%2C%20quisiera%20solicitar%20cotizaci%C3%B3n%20del%20Custon%2045." target="_blank" rel="noopener noreferrer" class="btn-bugatti">
+                COTIZAR UNIDAD
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- SLIDE 3: CUSTON 42 -->
+        <div id="custon-42" class="hero-slide" role="group" aria-roledescription="diapositiva" aria-label="3 de 4: Custon 42" style="--hero-focus: 60% 50%; --hero-focus-mobile: 75% 50%;">
+          <div class="hero-media-backdrop">
+            <picture>
+              <source type="image/webp"
+                      srcset="assets/hero/custon-42-1280.webp 1280w, assets/hero/custon-42-2048.webp 2048w, assets/hero/custon-42-2752.webp 2752w"
+                      sizes="max(100vw, 179vh)">
+              <img src="cruceros/modelos/modelo_custon_42.jpg" alt="Custon 42 Hard Top navegando" fetchpriority="low">
+            </picture>
+          </div>
+          <div class="hero-vignette"></div>
+
+          <div class="hero-content">
+            <div class="hero-pre-title">HARD TOP COUPÉ // DINAMISMO CONTINENTAL</div>
+            <h2 class="hero-title-monumental">CUSTON 42</h2>
+            <p class="hero-tagline">
+              Techo rígido integrado, perfiles afilados y un cockpit social que se funde con la planchada de popa.
+            </p>
+
+            <div class="telemetry-strip sharp-edge">
+              <div class="telemetry-box">
+                <span class="telemetry-label">Eslora</span>
+                <span class="telemetry-val">12.85 M</span>
+              </div>
+              <div class="telemetry-box">
+                <span class="telemetry-label">Manga</span>
+                <span class="telemetry-val">4.03 M</span>
+              </div>
+              <div class="telemetry-box">
+                <span class="telemetry-label">Potencia</span>
+                <span class="telemetry-val">760 HP</span>
+              </div>
+              <div class="telemetry-box">
+                <span class="telemetry-label">Desplazamiento</span>
+                <span class="telemetry-val">11 TON</span>
+              </div>
+            </div>
+
+            <div class="hero-actions-row">
+              <button class="btn-bugatti btn-bugatti-primary" onclick="openModelModal('custon-42')">
+                EXPLORAR CUSTON 42
+              </button>
+              <a href="https://wa.me/5491147446468?text=*CONSULTA%20VIP%20-%20CUSTON%2042*%0A%0AHola%20Eduardo%20Damiani%2C%20quisiera%20solicitar%20cotizaci%C3%B3n%20del%20Custon%2042%20Hard%20Top." target="_blank" rel="noopener noreferrer" class="btn-bugatti">
+                COTIZAR UNIDAD
+              </a>
+            </div>
+          </div>
+        </div>
+        <!-- SLIDE 4: CUSTON 40 -->
+        <div id="custon-40" class="hero-slide" role="group" aria-roledescription="diapositiva" aria-label="4 de 4: Custon 40" style="--hero-focus: 50% 62%; --hero-focus-mobile: 60% 50%;">
+          <div class="hero-media-backdrop">
+            <picture>
+              <source type="image/webp"
+                      srcset="assets/hero/custon-40-960.webp 960w, assets/hero/custon-40-1600.webp 1600w, assets/hero/custon-40-1792.webp 1792w"
+                      sizes="100vw">
+              <img src="cruceros/modelos/modelo_custon_40.jpg" alt="Custon 40 navegando" fetchpriority="low">
+            </picture>
+          </div>
+          <div class="hero-vignette"></div>
+
+          <div class="hero-content">
+            <div class="hero-pre-title">DISEÑO CONTEMPORÁNEO // PUR SANG NAVAL</div>
+            <h2 class="hero-title-monumental">CUSTON 40</h2>
+            <p class="hero-tagline">
+              Roble de cape, cueros ecológicos y una superficie vidriada que inunda de luz natural todo el interior.
+            </p>
+
+            <div class="telemetry-strip sharp-edge">
+              <div class="telemetry-box">
+                <span class="telemetry-label">Eslora</span>
+                <span class="telemetry-val">12.36 M</span>
+              </div>
+              <div class="telemetry-box">
+                <span class="telemetry-label">Potencia</span>
+                <span class="telemetry-val">800 HP</span>
+              </div>
+              <div class="telemetry-box">
+                <span class="telemetry-label">Combustible</span>
+                <span class="telemetry-val">1.200 L</span>
+              </div>
+              <div class="telemetry-box">
+                <span class="telemetry-label">Desplazamiento</span>
+                <span class="telemetry-val">10 TON</span>
+              </div>
+            </div>
+
+            <div class="hero-actions-row">
+              <button class="btn-bugatti btn-bugatti-primary" onclick="openModelModal('custon-40')">
+                EXPLORAR CUSTON 40
+              </button>
+              <a href="https://wa.me/5491147446468?text=*CONSULTA%20VIP%20-%20CUSTON%2040*%0A%0AHola%20Eduardo%20Damiani%2C%20quisiera%20solicitar%20cotizaci%C3%B3n%20del%20Custon%2040." target="_blank" rel="noopener noreferrer" class="btn-bugatti">
+                COTIZAR UNIDAD
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-carousel-nav">
+        <div class="carousel-tabs" role="group" aria-label="Elegir modelo">
+          <button type="button" class="carousel-tab is-active" data-slide="0" aria-label="Ver Preveza 62" aria-current="true">
+            <span class="carousel-tab-label"><span class="carousel-tab-num">01</span><span class="carousel-tab-name">Preveza 62</span></span>
+            <span class="carousel-tab-track"><span class="carousel-tab-fill"></span></span>
           </button>
-          <a href="https://wa.me/5491147446468?text=*CONSULTA%20VIP%20-%20PREVEZA%2062*%0A%0AHola%20Eduardo%20Damiani%2C%20quisiera%20solicitar%20el%20dossier%20confidencial%20y%20cotizaci%C3%B3n%20formal%20de%20la%20nave%20insignia%20Preveza%2062." target="_blank" rel="noopener noreferrer" class="btn-bugatti">
-            SOLICITAR AUDIENCIA PRIVADA
-          </a>
+          <button type="button" class="carousel-tab" data-slide="1" aria-label="Ver Custon 45">
+            <span class="carousel-tab-label"><span class="carousel-tab-num">02</span><span class="carousel-tab-name">Custon 45</span></span>
+            <span class="carousel-tab-track"><span class="carousel-tab-fill"></span></span>
+          </button>
+          <button type="button" class="carousel-tab" data-slide="2" aria-label="Ver Custon 42">
+            <span class="carousel-tab-label"><span class="carousel-tab-num">03</span><span class="carousel-tab-name">Custon 42</span></span>
+            <span class="carousel-tab-track"><span class="carousel-tab-fill"></span></span>
+          </button>
+          <button type="button" class="carousel-tab" data-slide="3" aria-label="Ver Custon 40">
+            <span class="carousel-tab-label"><span class="carousel-tab-num">04</span><span class="carousel-tab-name">Custon 40</span></span>
+            <span class="carousel-tab-track"><span class="carousel-tab-fill"></span></span>
+          </button>
         </div>
-      </div>
-
-      <div class="scroll-indicator-wrap">
-        <span class="scroll-label">EXPLORAR</span>
-        <div class="scroll-line"></div>
+        <div class="carousel-controls">
+          <button type="button" class="carousel-arrow" data-dir="-1" aria-label="Modelo anterior">
+            <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M8 2 L4 6 L8 10" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+          <button type="button" class="carousel-arrow" data-dir="1" aria-label="Modelo siguiente">
+            <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M4 2 L8 6 L4 10" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+          </button>
+          <button type="button" class="carousel-arrow carousel-toggle" aria-label="Pausar carrusel" aria-pressed="false">
+            <svg class="icon-pause" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M3.5 2 V10 M8.5 2 V10" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+            <svg class="icon-play" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M3.5 2 L10 6 L3.5 10 Z" fill="currentColor"/></svg>
+          </button>
+        </div>
       </div>
     </section>
 
-    <!-- 4. FULL-BLEED MONUMENTAL SHOWCASES (BUGATTI LINEUP EXPERIENCE) -->
-    <div id="showcases">
-      <!-- SHOWCASE 1: CUSTON 45 -->
-      <section class="bugatti-showcase-section" aria-label="Custon 45 Showcase">
-        <div class="showcase-bg-media">
-          <img src="cruceros/modelos/modelo_custon_cruiser_45.jpg" alt="Custon 45 Cruiser" loading="lazy">
-        </div>
-        <div class="showcase-vignette-left"></div>
-        <div class="showcase-content-box">
-          <div class="showcase-eyebrow">YATE FLYBRIDGE // LE GRAND CROISEUR</div>
-          <h2 class="showcase-vessel-title">CUSTON 45</h2>
-          <p class="showcase-narrative">
-            Un crucero de marcado estilo europeo con líneas contemporáneas y una inmensa superficie vidriada lateral. Concebido bajo el principio rector de "un barco para vivir a bordo", ofrece tres camarotes completos, dos baños y doble motorización oceánica.
-          </p>
+    <!-- 4. INVITATION: TRUST & EXPLORE THE FLEET -->
+    <section id="familia" class="section-invite" aria-label="Encuentre su navío" data-page-label="Su navío">
+      <div class="invite-media">
+        <picture>
+          <source type="image/webp"
+                  srcset="assets/family/familia-flota-1280.webp 1280w, assets/family/familia-flota-2048.webp 2048w, assets/family/familia-flota-2752.webp 2752w"
+                  sizes="max(100vw, 179vh)">
+          <img src="assets/family/Gemini_Generated_Image_pa5zmjpa5zmjpa5z.jpg" alt="Flota de cruceros Custon navegando en formación" loading="lazy">
+        </picture>
+      </div>
+      <div class="invite-scrim"></div>
 
-          <div class="showcase-specs-cluster">
-            <div class="showcase-spec-unit">
-              <span class="showcase-spec-k">Eslora</span>
-              <span class="showcase-spec-v">14.10 M</span>
-            </div>
-            <div class="showcase-spec-unit">
-              <span class="showcase-spec-k">Manga</span>
-              <span class="showcase-spec-v">4.26 M</span>
-            </div>
-            <div class="showcase-spec-unit">
-              <span class="showcase-spec-k">Potencia</span>
-              <span class="showcase-spec-v">900 HP</span>
-            </div>
-            <div class="showcase-spec-unit">
-              <span class="showcase-spec-k">Habitabilidad</span>
-              <span class="showcase-spec-v">3 Cam / 2 Baños</span>
-            </div>
-          </div>
-
-          <div class="hero-actions-row">
-            <button class="btn-bugatti btn-bugatti-primary" onclick="openModelModal('custon-45')">
-              DOSSIER TÉCNICO
-            </button>
-            <a href="https://wa.me/5491147446468?text=*CONSULTA%20VIP%20-%20CUSTON%2045*%0A%0AHola%20Eduardo%20Damiani%2C%20quisiera%20solicitar%20cotizaci%C3%B3n%20del%20Custon%2045." target="_blank" rel="noopener noreferrer" class="btn-bugatti">
-              COTIZAR UNIDAD
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- SHOWCASE 2: CUSTON 42 COUPÉ HT -->
-      <section class="bugatti-showcase-section" aria-label="Custon 42 Showcase">
-        <div class="showcase-bg-media">
-          <img src="cruceros/modelos/modelo_custon_42.jpg" alt="Custon 42 Coupé HT" loading="lazy">
-        </div>
-        <div class="showcase-vignette-left"></div>
-        <div class="showcase-content-box">
-          <div class="showcase-eyebrow">HARD TOP COUPÉ // DINAMISMO CONTINENTAL</div>
-          <h2 class="showcase-vessel-title">CUSTON 42</h2>
-          <p class="showcase-narrative">
-            La expresión del diseño aerodinámico náutico. Techo rígido integrado con apertura fluida, perfiles afilados y un cockpit social que fusiona el salón principal con la planchada de popa para una experiencia sin interrupciones.
-          </p>
-
-          <div class="showcase-specs-cluster">
-            <div class="showcase-spec-unit">
-              <span class="showcase-spec-k">Eslora</span>
-              <span class="showcase-spec-v">12.85 M</span>
-            </div>
-            <div class="showcase-spec-unit">
-              <span class="showcase-spec-k">Manga</span>
-              <span class="showcase-spec-v">4.03 M</span>
-            </div>
-            <div class="showcase-spec-unit">
-              <span class="showcase-spec-k">Configuración</span>
-              <span class="showcase-spec-v">Hard Top Coupé</span>
-            </div>
-            <div class="showcase-spec-unit">
-              <span class="showcase-spec-k">Propulsión</span>
-              <span class="showcase-spec-v">Bimotor Diesel</span>
-            </div>
-          </div>
-
-          <div class="hero-actions-row">
-            <button class="btn-bugatti btn-bugatti-primary" onclick="openModelModal('custon-42')">
-              DOSSIER TÉCNICO
-            </button>
-            <a href="https://wa.me/5491147446468?text=*CONSULTA%20VIP%20-%20CUSTON%2042*%0A%0AHola%20Eduardo%20Damiani%2C%20quisiera%20solicitar%20cotizaci%C3%B3n%20del%20Custon%2042%20Hard%20Top." target="_blank" rel="noopener noreferrer" class="btn-bugatti">
-              COTIZAR UNIDAD
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- SHOWCASE 3: CUSTON 40 -->
-      <section class="bugatti-showcase-section" aria-label="Custon 40 Showcase">
-        <div class="showcase-bg-media">
-          <img src="cruceros/modelos/modelo_custon_40.jpg" alt="Custon 40 Cruising" loading="lazy">
-        </div>
-        <div class="showcase-vignette-left"></div>
-        <div class="showcase-content-box">
-          <div class="showcase-eyebrow">DISEÑO CONTEMPORÁNEO // PUR SANG NAVAL</div>
-          <h2 class="showcase-vessel-title">CUSTON 40</h2>
-          <p class="showcase-narrative">
-            Revestimientos interiores en roble de cape y cueros ecológicos. Una imponente superficie acristalada de proa a popa que ofrece vistas panorámicas al Río de la Plata y un andar dócil en cualquier régimen de navegación.
-          </p>
-
-          <div class="showcase-specs-cluster">
-            <div class="showcase-spec-unit">
-              <span class="showcase-spec-k">Eslora</span>
-              <span class="showcase-spec-v">12.36 M</span>
-            </div>
-            <div class="showcase-spec-unit">
-              <span class="showcase-spec-k">Potencia</span>
-              <span class="showcase-spec-v">800 HP</span>
-            </div>
-            <div class="showcase-spec-unit">
-              <span class="showcase-spec-k">Combustible</span>
-              <span class="showcase-spec-v">1.200 L</span>
-            </div>
-            <div class="showcase-spec-unit">
-              <span class="showcase-spec-k">Desplazamiento</span>
-              <span class="showcase-spec-v">10 TON</span>
-            </div>
-          </div>
-
-          <div class="hero-actions-row">
-            <button class="btn-bugatti btn-bugatti-primary" onclick="openModelModal('custon-40')">
-              DOSSIER TÉCNICO
-            </button>
-            <a href="https://wa.me/5491147446468?text=*CONSULTA%20VIP%20-%20CUSTON%2040*%0A%0AHola%20Eduardo%20Damiani%2C%20quisiera%20solicitar%20cotizaci%C3%B3n%20del%20Custon%2040." target="_blank" rel="noopener noreferrer" class="btn-bugatti">
-              COTIZAR UNIDAD
-            </a>
-          </div>
-        </div>
-      </section>
-    </div>
+      <div class="invite-content">
+        <div class="invite-eyebrow">Encuentre su navío</div>
+        <h2 class="invite-title">Construimos la embarcación que te mereces</h2>
+        <p class="invite-text">
+          De sport cruisers a yates flybridge, cada Custon nace en nuestro astillero de San Fernando. Descubra el modelo que mejor se adapta a su forma de navegar.
+        </p>
+        <a href="#showroom" class="invite-link">
+          Explorar los modelos <span class="invite-link-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+    </section>
 
     <!-- 5. THE COMPLETE FLEET (BUGATTI MODELS WIDESCREEN INDEX) -->
-    <section id="showroom" class="section-fleet-index" aria-label="Catálogo de la Flota Completa">
+    <section id="showroom" class="section-fleet-index" aria-label="Catálogo de la Flota Completa" data-page-label="La Flota">
       <div class="fleet-container">
         <div class="section-editorial-header">
           <div>
@@ -2271,7 +2787,7 @@
     </section>
 
     <!-- 6. SUR MESURE ATELIER (BUGATTI BESPOKE NAVAL PROGRAM) -->
-    <section id="sur-mesure" class="section-sur-mesure" aria-label="Atelier Sur Mesure Naval">
+    <section id="sur-mesure" class="section-sur-mesure" aria-label="Atelier Sur Mesure Naval" data-page-label="Sur Mesure">
       <div class="sur-mesure-wrap">
         <div class="sur-mesure-hero-block">
           <div class="sur-mesure-narrative">
@@ -2331,90 +2847,11 @@
             </p>
           </div>
         </div>
-
-        <!-- Interactive Visualizer (Bespoke Selector) -->
-        <div class="bespoke-configurator-card sharp-edge">
-          <div class="configurator-grid">
-            <div class="configurator-preview-pane sharp-edge">
-              <div class="preview-telemetry-badge">SIMULADOR SUR MESURE // 360° AESTHETICS</div>
-
-              <div class="hull-preview-canvas">
-                <!-- Architectural Yacht Silhouette SVG -->
-                <svg viewBox="0 0 400 150" class="hull-svg-shape">
-                  <path id="svg-deck" d="M 40 85 L 140 50 L 260 50 L 320 85 Z" fill="#1C1C1E" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
-                  <path id="svg-cabin" d="M 120 50 L 160 25 L 240 25 L 270 50 Z" fill="#2C2C2E" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
-                  <path id="svg-glass" d="M 165 30 L 220 30 L 235 48 L 155 48 Z" fill="#48484A" opacity="0.8"/>
-                  <path id="svg-hull" d="M 25 85 L 360 85 L 340 120 L 70 120 Z" fill="#0A0A0A" stroke="#FFFFFF" stroke-width="1.5"/>
-                  <line x1="25" y1="120" x2="375" y2="120" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
-                </svg>
-              </div>
-
-              <div id="cfg-serial-badge" class="preview-code-badge">CUSTON-SM-2026-081</div>
-            </div>
-
-            <div class="configurator-options-pane">
-              <div>
-                <div class="config-group-title">1. ACABADO DEL GELCOAT (CASCO)</div>
-                <div class="swatches-row">
-                  <button class="swatch-btn selected" onclick="setBespokeColor('black', '#0A0A0A', this)">
-                    <span class="swatch-circle" style="background: #0A0A0A;"></span> NOCTURNE BLACK
-                  </button>
-                  <button class="swatch-btn" onclick="setBespokeColor('glacier', '#E5E5EA', this)">
-                    <span class="swatch-circle" style="background: #E5E5EA;"></span> BIANCO GLACIER
-                  </button>
-                  <button class="swatch-btn" onclick="setBespokeColor('blue', '#0B2545', this)">
-                    <span class="swatch-circle" style="background: #0B2545;"></span> BUGATTI BLEU
-                  </button>
-                  <button class="swatch-btn" onclick="setBespokeColor('titanium', '#3A3D40', this)">
-                    <span class="swatch-circle" style="background: #3A3D40;"></span> SLATE TITANIUM
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <div class="config-group-title">2. EBANISTERÍA NAVAL INTERIOR</div>
-                <div class="swatches-row">
-                  <button class="swatch-btn selected" onclick="setBespokeWood('roble', this)">
-                    ROBLE DE CAPE
-                  </button>
-                  <button class="swatch-btn" onclick="setBespokeWood('teca', this)">
-                    TECA DE BIRMANIA
-                  </button>
-                  <button class="swatch-btn" onclick="setBespokeWood('nogal', this)">
-                    NOGAL OSCURO
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <div class="config-group-title">3. ALTA PELETERÍA & TAPICERÍA</div>
-                <div class="swatches-row">
-                  <button class="swatch-btn selected" onclick="setBespokeLeather('crema', this)">
-                    CUERO CREMA MARFIL
-                  </button>
-                  <button class="swatch-btn" onclick="setBespokeLeather('negro', this)">
-                    CUERO ÁGATA NEGRO
-                  </button>
-                  <button class="swatch-btn" onclick="setBespokeLeather('cognac', this)">
-                    COGNAC VINTAGE
-                  </button>
-                </div>
-              </div>
-
-              <div style="margin-top: 1rem;">
-                <button class="btn-bugatti btn-bugatti-primary" onclick="dispatchBespokeWhatsApp()">
-                  DISPATCH CONFIGURACIÓN VÍA WHATSAPP
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
     </section>
 
     <!-- 7. SAN FERNANDO SHIPYARD & HERITAGE (MOLSHEIM COUNTERPART) -->
-    <section id="varadero" class="section-heritage-yard" aria-label="El Astillero San Fernando">
+    <section id="varadero" class="section-heritage-yard" aria-label="El Astillero San Fernando" data-page-label="El Astillero">
       <div class="yard-container">
         <div class="yard-grid">
           <div class="yard-media-spread sharp-edge">
@@ -2461,13 +2898,13 @@
     </section>
 
     <!-- 8. VIP CONCIERGE & PRIVATE AUDIENCES -->
-    <section id="concierge" class="section-concierge" aria-label="Audiencias Privadas y Contacto VIP">
+    <section id="concierge" class="section-concierge" aria-label="Audiencias Privadas y Contacto VIP" data-page-label="Concierge">
       <div class="concierge-wrap">
         <div class="concierge-card-box sharp-edge">
           <div class="concierge-direct-info">
             <div>
               <div class="section-label">// PRIVILEGIOS VIP</div>
-              <h2 class="section-main-heading" style="font-size: clamp(2rem, 3.5vw, 2.8rem);">AUDIENCIAS PRIVADAS</h2>
+              <h2 class="section-main-heading">AUDIENCIAS PRIVADAS</h2>
               <p style="color: #A0A0A5; margin-top: 1rem; line-height: 1.6;">
                 La adquisición de una unidad Custon es una experiencia personalizada de principio a fin. El Directorio del astillero recibe a los futuros armadores con cita previa en nuestra sede náutica para coordinar pruebas de navegación y definir detalles de equipamiento.
               </p>
@@ -2558,10 +2995,10 @@
   </div>
 
   <!-- 10. BUGATTI MONUMENTAL FOOTER -->
-  <footer id="site-footer">
+  <footer id="site-footer" data-page-label="Sede">
     <div class="footer-wrap">
       <div class="footer-brand-masthead">
-        <div class="footer-giant-wordmark">ASTILLERO CUSTON</div>
+        <img src="assets/logo-astillero-custon.png" alt="Astillero Custon" class="footer-logo" width="944" height="218" loading="lazy">
       </div>
 
       <div class="footer-columns-grid">
@@ -2614,7 +3051,7 @@
         <div>
           © 2026 ASTILLERO CUSTON S.A. TODOS LOS DERECHOS RESERVADOS. HIGH LUXURY NAVAL ARCHITECTURE.
         </div>
-        <button class="footer-back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <button class="footer-back-to-top" onclick="scrollToPage(0)">
           ↑ VOLVER ARRIBA
         </button>
       </div>
@@ -2891,63 +3328,6 @@
       }
     });
 
-    // Sur Mesure Configurator State
-    let bespokeState = {
-      colorName: 'NOCTURNE BLACK',
-      colorHex: '#0A0A0A',
-      wood: 'ROBLE DE CAPE',
-      leather: 'CUERO CREMA MARFIL'
-    };
-
-    function setBespokeColor(id, hex, btn) {
-      btn.parentElement.querySelectorAll('.swatch-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-
-      bespokeState.colorHex = hex;
-      bespokeState.colorName = btn.textContent.trim();
-
-      const hull = document.getElementById('svg-hull');
-      if (hull) {
-        hull.setAttribute('fill', hex);
-      }
-      updateSerial();
-    }
-
-    function setBespokeWood(id, btn) {
-      btn.parentElement.querySelectorAll('.swatch-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      bespokeState.wood = btn.textContent.trim();
-      updateSerial();
-    }
-
-    function setBespokeLeather(id, btn) {
-      btn.parentElement.querySelectorAll('.swatch-btn').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
-      bespokeState.leather = btn.textContent.trim();
-      updateSerial();
-    }
-
-    function updateSerial() {
-      const hash = Math.floor(1000 + Math.random() * 9000);
-      const code = `CUSTON-SM-2026-${hash}`;
-      const badge = document.getElementById('cfg-serial-badge');
-      if (badge) badge.textContent = code;
-      bespokeState.serial = code;
-    }
-
-    function dispatchBespokeWhatsApp() {
-      const serial = bespokeState.serial || 'CUSTON-SM-2026-081';
-      const text = encodeURIComponent(
-        `*CONFIGURACIÓN BESPOKE SUR MESURE NAVAL*\n\n` +
-        `Código de Configuración: *${serial}*\n` +
-        `• Color de Casco (Gelcoat): ${bespokeState.colorName}\n` +
-        `• Ebanistería Interior: ${bespokeState.wood}\n` +
-        `• Tapicería Náutica: ${bespokeState.leather}\n\n` +
-        `Hola Eduardo Damiani, me gustaría coordinar una audiencia y cotizar la construcción personalizada de una unidad bajo estas especificaciones.`
-      );
-      window.open(`https://wa.me/5491147446468?text=${text}`, '_blank');
-    }
-
     // Concierge Form Handler
     function handleConciergeSubmit(e) {
       e.preventDefault();
@@ -2967,6 +3347,393 @@
 
       window.open(`https://wa.me/5491147446468?text=${text}`, '_blank');
     }
+
+    // Slide On Scroll (Page-to-Page Transitions)
+    // Scrolling is free inside a page; once the viewport overshoots the page edge
+    // by more than SLIDE_THRESHOLD px, it glides to the next (or previous) page.
+    const SLIDE_THRESHOLD = 100;
+    const SLIDE_DURATION = 900;
+    const SCROLL_KEYS = [' ', 'PageUp', 'PageDown', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+    const slidePages = Array.from(document.querySelectorAll('main > section, #site-footer'));
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let slideIndex = 0;
+    let slideLocked = false;
+    let slideToken = 0;
+    let lastWheelAt = 0;
+
+    // Scroll range [min, max] in which each page rests (max > min for pages taller than the viewport)
+    function getPageRanges() {
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      return slidePages.map(page => {
+        const rect = page.getBoundingClientRect();
+        const min = Math.min(rect.top + window.scrollY, maxScroll);
+        const max = Math.max(min, Math.min(rect.bottom + window.scrollY - window.innerHeight, maxScroll));
+        return { min, max };
+      });
+    }
+
+    function pageIndexAt(y, ranges) {
+      let index = 0;
+      ranges.forEach((range, i) => {
+        if (range.min <= y + 1) index = i;
+      });
+      return index;
+    }
+
+    const easeInOutCubic = t => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    function slideTo(index, targetY) {
+      const token = ++slideToken;
+      const startY = window.scrollY;
+      const distance = targetY - startY;
+      const startTime = performance.now();
+
+      slideIndex = index;
+      slideLocked = true;
+      document.documentElement.classList.add('is-sliding');
+      updateCarouselPlayState();
+
+      function step(now) {
+        if (token !== slideToken) return;
+        const progress = Math.min((now - startTime) / SLIDE_DURATION, 1);
+        window.scrollTo({ top: startY + distance * easeInOutCubic(progress), behavior: 'instant' });
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        } else {
+          document.documentElement.classList.remove('is-sliding');
+          releaseSlideLock(token, performance.now());
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    // Keep input blocked while trackpad / wheel inertia is still arriving
+    function releaseSlideLock(token, finishedAt) {
+      if (token !== slideToken) return;
+      const now = performance.now();
+      if (now - lastWheelAt < 200 && now - finishedAt < 1200) {
+        setTimeout(() => releaseSlideLock(token, finishedAt), 50);
+      } else {
+        slideLocked = false;
+      }
+    }
+
+    function scrollToPage(index) {
+      const ranges = getPageRanges();
+      if (!ranges[index]) return;
+      if (Math.abs(ranges[index].min - window.scrollY) < 1) {
+        slideIndex = index;
+        updatePageRail();
+        updateCarouselPlayState();
+        return;
+      }
+      if (reducedMotion.matches) {
+        slideIndex = index;
+        window.scrollTo({ top: ranges[index].min, behavior: 'instant' });
+        return;
+      }
+      slideTo(index, ranges[index].min);
+    }
+
+    function checkSlideBoundary() {
+      if (slideLocked || reducedMotion.matches || document.body.classList.contains('modal-active')) return;
+
+      const ranges = getPageRanges();
+      const y = window.scrollY;
+      const current = ranges[slideIndex];
+
+      if (y > current.max + SLIDE_THRESHOLD) {
+        const next = ranges[slideIndex + 1];
+        if (!next) return;
+        // Large jumps (scrollbar drag, End key, find-in-page) just resync the current page
+        if (y >= next.min) {
+          slideIndex = pageIndexAt(y, ranges);
+          return;
+        }
+        slideTo(slideIndex + 1, next.min);
+      } else if (y < current.min - SLIDE_THRESHOLD) {
+        const prev = ranges[slideIndex - 1];
+        if (!prev) return;
+        if (y <= prev.max) {
+          slideIndex = pageIndexAt(y, ranges);
+          return;
+        }
+        slideTo(slideIndex - 1, prev.max);
+      }
+    }
+
+    let slideCheckQueued = false;
+    window.addEventListener('scroll', () => {
+      if (slideCheckQueued) return;
+      slideCheckQueued = true;
+      requestAnimationFrame(() => {
+        slideCheckQueued = false;
+        checkSlideBoundary();
+        updatePageRail();
+        updateCarouselPlayState();
+      });
+    }, { passive: true });
+
+    window.addEventListener('wheel', (e) => {
+      if (!slideLocked) return;
+      lastWheelAt = performance.now();
+      e.preventDefault();
+    }, { passive: false });
+
+    window.addEventListener('touchmove', (e) => {
+      if (slideLocked) e.preventDefault();
+    }, { passive: false });
+
+    window.addEventListener('keydown', (e) => {
+      if (slideLocked && SCROLL_KEYS.includes(e.key) && !(e.target instanceof Element && e.target.closest('input, textarea, select'))) {
+        e.preventDefault();
+      }
+    });
+
+    function pageIndexForId(id) {
+      const target = id && document.getElementById(id);
+      if (!target) return -1;
+      return slidePages.findIndex(page => page === target || page.contains(target) || target.contains(page));
+    }
+
+    // In-page anchors (menu, navbar, footer) use the same page transition
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a[href^="#"]');
+      if (!link || reducedMotion.matches) return;
+      const id = link.getAttribute('href').slice(1);
+      const index = pageIndexForId(id);
+      if (index === -1) return;
+      e.preventDefault();
+      history.replaceState(null, '', `#${id}`);
+      scrollToPage(index);
+    });
+
+    // Hash changes from outside the page (address bar, back / forward)
+    window.addEventListener('hashchange', () => {
+      const id = location.hash.slice(1);
+      const index = pageIndexForId(id);
+      if (index !== -1) scrollToPage(index);
+      showSlideById(id);
+    });
+
+    // Page Rail (Custom Scrollbar for Slide Navigation)
+    const railTrack = document.getElementById('rail-track');
+    const railCurrent = document.getElementById('rail-current');
+    const railPrev = document.getElementById('rail-prev');
+    const railNext = document.getElementById('rail-next');
+    const pad2 = n => String(n).padStart(2, '0');
+
+    document.getElementById('rail-total').textContent = pad2(slidePages.length);
+
+    const railSegments = slidePages.map((page, i) => {
+      const label = page.dataset.pageLabel || `Página ${i + 1}`;
+      const seg = document.createElement('button');
+      seg.type = 'button';
+      seg.className = 'rail-seg';
+      seg.setAttribute('aria-label', `Ir a ${label}`);
+      seg.innerHTML = `<span class="rail-line"><span class="rail-fill"></span></span><span class="rail-label">${pad2(i + 1)} // ${label}</span>`;
+      // Mouse / touch go through the drag logic below; this handles keyboard activation only
+      seg.addEventListener('click', (e) => {
+        if (e.detail === 0) scrollToPage(i);
+      });
+      railTrack.appendChild(seg);
+      return seg;
+    });
+
+    function updatePageRail() {
+      const range = getPageRanges()[slideIndex];
+      const span = range.max - range.min;
+      const progress = span > 0 ? Math.min(Math.max((window.scrollY - range.min) / span, 0), 1) : 0;
+      const thumbSize = window.innerHeight / (span + window.innerHeight);
+
+      railSegments.forEach((seg, i) => {
+        const active = i === slideIndex;
+        seg.classList.toggle('is-active', active);
+        if (active) {
+          seg.setAttribute('aria-current', 'page');
+          seg.style.setProperty('--thumb-size', thumbSize);
+          seg.style.setProperty('--thumb-pos', progress * (1 - thumbSize));
+        } else {
+          seg.removeAttribute('aria-current');
+        }
+      });
+
+      railCurrent.textContent = pad2(slideIndex + 1);
+      railPrev.disabled = slideIndex === 0;
+      railNext.disabled = slideIndex === slidePages.length - 1;
+    }
+
+    railPrev.addEventListener('click', () => scrollToPage(slideIndex - 1));
+    railNext.addEventListener('click', () => scrollToPage(slideIndex + 1));
+
+    // Drag along the rail previews a page; the slide only happens on release, so pages are never skipped mid-drag
+    let railDragging = false;
+    let railPreview = -1;
+
+    function railIndexAt(clientY) {
+      let best = 0;
+      let bestDistance = Infinity;
+      railSegments.forEach((seg, i) => {
+        const rect = seg.getBoundingClientRect();
+        const distance = Math.abs(clientY - (rect.top + rect.height / 2));
+        if (distance < bestDistance) {
+          bestDistance = distance;
+          best = i;
+        }
+      });
+      return best;
+    }
+
+    function setRailPreview(index) {
+      railPreview = index;
+      railSegments.forEach((seg, i) => seg.classList.toggle('is-preview', i === index));
+    }
+
+    function endRailDrag(commit) {
+      if (!railDragging) return;
+      railDragging = false;
+      railTrack.classList.remove('is-dragging');
+      if (commit) scrollToPage(railPreview);
+      setRailPreview(-1);
+    }
+
+    railTrack.addEventListener('pointerdown', (e) => {
+      if (e.button !== 0) return;
+      e.preventDefault();
+      railDragging = true;
+      railTrack.setPointerCapture(e.pointerId);
+      railTrack.classList.add('is-dragging');
+      setRailPreview(railIndexAt(e.clientY));
+    });
+    railTrack.addEventListener('pointermove', (e) => {
+      if (railDragging) setRailPreview(railIndexAt(e.clientY));
+    });
+    railTrack.addEventListener('pointerup', () => endRailDrag(true));
+    railTrack.addEventListener('pointercancel', () => endRailDrag(false));
+
+    function syncSlidePage() {
+      slideIndex = pageIndexAt(window.scrollY, getPageRanges());
+      updatePageRail();
+    }
+
+    syncSlidePage();
+    window.addEventListener('load', syncSlidePage);
+    window.addEventListener('resize', updatePageRail);
+
+    // Hero Carousel (featured vessels): auto-advances when the active tab's progress
+    // animation ends, so the timer and the progress line can never drift apart.
+    const heroCarousel = document.getElementById('hero');
+    const heroSlidesWrap = heroCarousel.querySelector('.hero-slides');
+    const heroSlides = Array.from(heroCarousel.querySelectorAll('.hero-slide'));
+    const carouselTabs = Array.from(heroCarousel.querySelectorAll('.carousel-tab'));
+    const carouselToggle = heroCarousel.querySelector('.carousel-toggle');
+
+    let activeSlide = 0;
+    let carouselUserPaused = reducedMotion.matches;
+    let carouselHovered = false;
+    let carouselFocused = false;
+    let carouselPausedState = null;
+
+    function showSlide(index) {
+      const next = (index + heroSlides.length) % heroSlides.length;
+      heroSlides.forEach((slide, i) => {
+        const active = i === next;
+        slide.classList.toggle('is-active', active);
+        slide.setAttribute('aria-hidden', String(!active));
+        slide.inert = !active;
+      });
+      carouselTabs.forEach((tab, i) => {
+        tab.classList.toggle('is-active', i === next);
+        if (i === next) tab.setAttribute('aria-current', 'true');
+        else tab.removeAttribute('aria-current');
+      });
+      // Restart the progress line (also when re-selecting the current slide)
+      const fill = carouselTabs[next].querySelector('.carousel-tab-fill');
+      fill.style.animation = 'none';
+      void fill.offsetWidth;
+      fill.style.animation = '';
+      activeSlide = next;
+    }
+
+    function showSlideById(id) {
+      const index = heroSlides.findIndex(slide => slide.id === id);
+      if (index !== -1) showSlide(index);
+    }
+
+    // Paused by the user, while hovering a button or control, off this page, behind a modal or in a hidden tab
+    function updateCarouselPlayState() {
+      const paused = carouselUserPaused || carouselHovered || carouselFocused || slideIndex !== 0 ||
+        document.body.classList.contains('modal-active') || document.hidden;
+      if (paused === carouselPausedState) return;
+      carouselPausedState = paused;
+      heroCarousel.classList.toggle('is-paused', paused);
+      heroSlidesWrap.setAttribute('aria-live', paused ? 'polite' : 'off');
+    }
+
+    function setCarouselUserPaused(value) {
+      carouselUserPaused = value;
+      heroCarousel.classList.toggle('is-user-paused', value);
+      carouselToggle.setAttribute('aria-pressed', String(value));
+      carouselToggle.setAttribute('aria-label', value ? 'Reanudar carrusel' : 'Pausar carrusel');
+      updateCarouselPlayState();
+    }
+
+    carouselTabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => showSlide(i));
+      tab.querySelector('.carousel-tab-fill').addEventListener('animationend', () => {
+        if (i === activeSlide) showSlide(activeSlide + 1);
+      });
+    });
+    heroCarousel.querySelectorAll('.carousel-arrow[data-dir]').forEach(btn => {
+      btn.addEventListener('click', () => showSlide(activeSlide + Number(btn.dataset.dir)));
+    });
+    carouselToggle.addEventListener('click', () => setCarouselUserPaused(!carouselUserPaused));
+
+    heroCarousel.addEventListener('pointerover', (e) => {
+      // Only the slide's call-to-action buttons and the carousel controls hold the slide; text and photo do not
+      carouselHovered = e.pointerType === 'mouse' && !!e.target.closest('.hero-actions-row .btn-bugatti, .hero-carousel-nav button');
+      updateCarouselPlayState();
+    });
+    heroCarousel.addEventListener('pointerleave', () => {
+      carouselHovered = false;
+      updateCarouselPlayState();
+    });
+    heroCarousel.addEventListener('focusin', () => {
+      carouselFocused = true;
+      updateCarouselPlayState();
+    });
+    heroCarousel.addEventListener('focusout', (e) => {
+      carouselFocused = heroCarousel.contains(e.relatedTarget);
+      updateCarouselPlayState();
+    });
+
+    // Horizontal swipe on touch screens (vertical swipes keep scrolling between pages)
+    let carouselTouch = null;
+    heroCarousel.addEventListener('touchstart', (e) => {
+      carouselTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }, { passive: true });
+    heroCarousel.addEventListener('touchend', (e) => {
+      if (!carouselTouch) return;
+      const dx = e.changedTouches[0].clientX - carouselTouch.x;
+      const dy = e.changedTouches[0].clientY - carouselTouch.y;
+      carouselTouch = null;
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) showSlide(activeSlide + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+
+    document.addEventListener('keydown', (e) => {
+      if (slideIndex !== 0 || document.body.classList.contains('modal-active')) return;
+      if (e.target instanceof Element && e.target.closest('input, textarea, select')) return;
+      if (e.key === 'ArrowRight') showSlide(activeSlide + 1);
+      else if (e.key === 'ArrowLeft') showSlide(activeSlide - 1);
+    });
+
+    document.addEventListener('visibilitychange', updateCarouselPlayState);
+    new MutationObserver(updateCarouselPlayState).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    showSlide(0);
+    showSlideById(location.hash.slice(1));
+    setCarouselUserPaused(carouselUserPaused);
   </script>
 </body>
 </html>
